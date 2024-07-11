@@ -5,7 +5,7 @@ import React from "react";
 
 const Registration = () => {
   return (
-    <div className="grid grid-cols-2 h-screen py-[3.47rem] px-[2.8rem]  bg-white">
+    <div className="grid grid-cols-1 md:grid-cols-2 md:h-screen py-[3.47rem] px-[2.8rem]  bg-white">
       <div className="col-span-1 w-full flex justify-center items-center">
         <div className="flex flex-col  w-[27.6rem]">
           <div>
@@ -102,7 +102,7 @@ const Registration = () => {
           </div>
         </div>
       </div>
-      <div className="col-span-1">
+      <div className="mt-8 md:mt-0 col-span-1">
         <img
           src={"/images/house2.png"}
           alt="house "
