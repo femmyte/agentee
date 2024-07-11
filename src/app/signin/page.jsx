@@ -41,7 +41,7 @@ const Registration = () => {
               >
                 Password
               </label>
-              <div className="flex justify-between w-full gap-x-2 border border-[#E9E9EB] bg-white">
+              <div className="flex justify-between w-full gap-x-2 border border-[#E9E9EB] bg-white rounded-[0.375rem]">
                 <input
                   type="password"
                   className="  rounded-[0.375rem] p-[0.75rem] h-[2.375rem] font-[400] text-0.875rem] leading-[1.225rem] w-full text-[#89898A] "
@@ -57,18 +57,26 @@ const Registration = () => {
               </div>
             </div>
 
-            <div className="flex gap-x-2 mt-[2rem]">
-              <input
-                type="checkbox"
-                className="w-4 h-4 border border-[#E9E9EB]"
-                id="remember_me"
-              />
-              <label
-                htmlFor="remember_me"
-                className="font-[500] text-[0.875rem] leading-[1.225rem] mb-[0.25rem] text-[#202020]"
+            <div className="flex gap-x-2 mt-[2rem] items-center justify-between">
+              <div className="flex gap-x-2 items-center">
+                <input
+                  type="checkbox"
+                  className="w-4 h-4 border border-[#E9E9EB]"
+                  id="remember_me"
+                />
+                <label
+                  htmlFor="remember_me"
+                  className="font-[500] text-[0.875rem] leading-[1.225rem] mb-[0.25rem] text-[#202020] block"
+                >
+                  Remember me
+                </label>
+              </div>
+              <Link
+                href={"/reset-password"}
+                className="font-[500] text-[0.875rem] leading-[1.225rem] text-primary "
               >
-                Remember me
-              </label>
+                Forgot Passord?
+              </Link>
             </div>
             <div className="mt-[1.5rem]">
               <Link
@@ -96,7 +104,7 @@ const Registration = () => {
       </div>
       <div className="col-span-1">
         <img
-          src={"/images/house1.png"}
+          src={"/images/house2.png"}
           alt="house "
           className="h-[40rem] w-[41rem]"
         />

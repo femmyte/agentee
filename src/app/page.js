@@ -69,7 +69,7 @@ const Registration = () => {
               >
                 Password
               </label>
-              <div className="flex justify-between w-full gap-x-2 border border-[#E9E9EB] bg-white">
+              <div className="flex justify-between w-full gap-x-2 border border-[#E9E9EB] bg-white rounded-[0.375rem]">
                 <input
                   type="password"
                   className="  rounded-[0.375rem] p-[0.75rem] h-[2.375rem] font-[400] text-0.875rem] leading-[1.225rem] w-full text-[#89898A] "
@@ -89,12 +89,12 @@ const Registration = () => {
                 htmlFor="c_Password"
                 className="font-[500] text-[0.875rem] leading-[1.225rem] mb-[0.25rem] text-[#202020]"
               >
-                Password
+                Confirm Password
               </label>
-              <div className="flex justify-between w-full gap-x-2 border border-[#E9E9EB] bg-white">
+              <div className="flex justify-between w-full gap-x-2 border border-[#E9E9EB] bg-white rounded-[0.375rem]">
                 <input
                   type="password"
-                  className="  rounded-[0.375rem] p-[0.75rem] h-[2.375rem] font-[400] text-0.875rem] leading-[1.225rem] w-full text-[#89898A] "
+                  className="   p-[0.75rem] h-[2.375rem] font-[400] text-0.875rem] leading-[1.225rem] w-full text-[#89898A] "
                   placeholder="Enter your Password"
                   id="c_Password"
                 />
