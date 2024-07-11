@@ -69,26 +69,42 @@ const Registration = () => {
               >
                 Password
               </label>
-              <input
-                type="password"
-                className="border border-[#E9E9EB] bg-white rounded-[0.375rem] p-[0.75rem] h-[2.375rem] font-[400] text-0.875rem] leading-[1.225rem] text-[#89898A] w-full"
-                placeholder="Enter your Password"
-                id="Password"
-              ></input>
+              <div className="flex justify-between w-full gap-x-2 border border-[#E9E9EB] bg-white">
+                <input
+                  type="password"
+                  className="  rounded-[0.375rem] p-[0.75rem] h-[2.375rem] font-[400] text-0.875rem] leading-[1.225rem] w-full text-[#89898A] "
+                  placeholder="Enter your Password"
+                  id="Password"
+                />
+                <Image
+                  src={"/images/icons/eye.svg"}
+                  width={20}
+                  height={20}
+                  className="mr-1"
+                />
+              </div>
             </div>
             <div className=" mb-[1rem]">
               <label
                 htmlFor="c_Password"
                 className="font-[500] text-[0.875rem] leading-[1.225rem] mb-[0.25rem] text-[#202020]"
               >
-                Confirm Password
+                Password
               </label>
-              <input
-                type="password"
-                className="border border-[#E9E9EB] bg-white rounded-[0.375rem] p-[0.75rem] h-[2.375rem] font-[400] text-0.875rem] leading-[1.225rem] text-[#89898A] w-full"
-                placeholder="Enter your Confirm Password"
-                id="c_Password"
-              ></input>
+              <div className="flex justify-between w-full gap-x-2 border border-[#E9E9EB] bg-white">
+                <input
+                  type="password"
+                  className="  rounded-[0.375rem] p-[0.75rem] h-[2.375rem] font-[400] text-0.875rem] leading-[1.225rem] w-full text-[#89898A] "
+                  placeholder="Enter your Password"
+                  id="c_Password"
+                />
+                <Image
+                  src={"/images/icons/eye.svg"}
+                  width={20}
+                  height={20}
+                  className="mr-1"
+                />
+              </div>
             </div>
             <div className="flex gap-x-2 mt-[2rem]">
               <input
