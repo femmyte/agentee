@@ -7,7 +7,7 @@ const Confirmation = () => {
   return (
     <div className="h-screen bg-[#F8F9FB] ">
       <Nav />
-      <div className="flex justify-center bg-[#F8F9FB]  items-center h-screen max-h-[90vh] overflow-y-hidden">
+      <div className="flex justify-center bg-[#F8F9FB]  items-center h-[90vh] overflow-y-hidden">
         <div
           className="flex flex-col  w-[27.625rem] p-8  rounded-[1rem] bg-white "
           style={{
