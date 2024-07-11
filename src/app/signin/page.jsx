@@ -5,7 +5,7 @@ import React from "react";
 
 const Registration = () => {
   return (
-    <div className="grid grid-cols-2  py-[3.47rem] px-[2.8rem]  bg-white">
+    <div className="grid grid-cols-2 h-screen py-[3.47rem] px-[2.8rem]  bg-white">
       <div className="col-span-1 w-full flex justify-center items-center">
         <div className="flex flex-col  w-[27.6rem]">
           <div>
@@ -13,27 +13,13 @@ const Registration = () => {
           </div>
           <div className="mt-[2.5rem]">
             <h1 className="font-[500] text-[1.75rem] leading-[2.45rem] text-[#202020] mb-[0.5rem]">
-              Register
+              Sign in to your account
             </h1>
             <p className="font-[500] text-[1rem] leading-[140%] text-[#89898A]">
               Making House Renting Hassle-Free
             </p>
           </div>
           <div className="mt-[2.5rem] mb-[1rem]">
-            <div className=" mb-[1rem]">
-              <label
-                htmlFor="full_name"
-                className="font-[500] text-[0.875rem] leading-[1.225rem] mb-[0.25rem] text-[#202020]"
-              >
-                Full name
-              </label>
-              <input
-                type="text"
-                className="border border-[#E9E9EB] bg-white rounded-[0.375rem] p-[0.75rem] h-[2.375rem] font-[400] text-0.875rem] leading-[1.225rem] text-[#89898A] w-full"
-                placeholder="Enter your full name"
-                id="full_name"
-              ></input>
-            </div>
             <div className=" mb-[1rem]">
               <label
                 htmlFor="email"
@@ -50,20 +36,6 @@ const Registration = () => {
             </div>
             <div className=" mb-[1rem]">
               <label
-                htmlFor="phone_number"
-                className="font-[500] text-[0.875rem] leading-[1.225rem] mb-[0.25rem] text-[#202020]"
-              >
-                Phone Number
-              </label>
-              <input
-                type="tel"
-                className="border border-[#E9E9EB] bg-white rounded-[0.375rem] p-[0.75rem] h-[2.375rem] font-[400] text-0.875rem] leading-[1.225rem] text-[#89898A] w-full"
-                placeholder="Enter your Phone Number"
-                id="phone_number"
-              ></input>
-            </div>
-            <div className=" mb-[1rem]">
-              <label
                 htmlFor="Password"
                 className="font-[500] text-[0.875rem] leading-[1.225rem] mb-[0.25rem] text-[#202020]"
               >
@@ -76,20 +48,7 @@ const Registration = () => {
                 id="Password"
               ></input>
             </div>
-            <div className=" mb-[1rem]">
-              <label
-                htmlFor="c_Password"
-                className="font-[500] text-[0.875rem] leading-[1.225rem] mb-[0.25rem] text-[#202020]"
-              >
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                className="border border-[#E9E9EB] bg-white rounded-[0.375rem] p-[0.75rem] h-[2.375rem] font-[400] text-0.875rem] leading-[1.225rem] text-[#89898A] w-full"
-                placeholder="Enter your Confirm Password"
-                id="c_Password"
-              ></input>
-            </div>
+
             <div className="flex gap-x-2 mt-[2rem]">
               <input
                 type="checkbox"
@@ -108,27 +67,31 @@ const Registration = () => {
                 href={"/signin"}
                 className="flex items-center justify-center py-[0.625rem] px-[1.25rem] rounded-[0.375rem] bg-[#2C71F6] text-white"
               >
-                Sign up
+                Sign IN
               </Link>
             </div>
             <Google text={"Sign in with Google"} />
           </div>
           <div className="flex justify-center gap-1">
             <span className="font-[500] text-[0.875rem] leading-[1.225rem] text-[#89898A] ">
-              Already have an account?
+              Dont have an account?
             </span>
             {"  "}
             <Link
-              href={"/signin"}
+              href={"/"}
               className="font-[500] text-[0.875rem] leading-[1.225rem] text-primary "
             >
-              Sign In
+              Sign Up
             </Link>
           </div>
         </div>
       </div>
       <div className="col-span-1">
-        <img src={"/images/house1.png"} alt="house " className=" w-[41rem]" />
+        <img
+          src={"/images/house1.png"}
+          alt="house "
+          className="h-[40rem] w-[41rem]"
+        />
       </div>
     </div>
   );
