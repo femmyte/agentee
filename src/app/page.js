@@ -122,7 +122,7 @@ const Registration = () => {
             <div className="mt-[1.5rem]">
               <Link
                 href={"/signin"}
-                className="flex items-center justify-center py-[0.625rem] px-[1.25rem] rounded-[0.375rem] bg-[#2C71F6] text-white"
+                className="flex items-center justify-center py-[0.625rem] px-[1.25rem] rounded-[0.375rem] bg-[#2C71F6]  hover:bg-secondaryBlue text-white"
               >
                 Sign up
               </Link>
