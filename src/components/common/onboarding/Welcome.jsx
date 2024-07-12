@@ -26,14 +26,14 @@ const Welcome = () => {
               or renting out the perfect home.
             </p>
           </article>
-          <div className="flex justify-center w-full">
+          <div className="flex justify-center w-full px-5 md:px-0">
             <Image
               src={"/images/illustrations/welcome-big.svg"}
               width={510}
               height={300}
             ></Image>
           </div>
-          <div className="mt-[3.22rem] flex justify-end">
+          <div className="mt-[3.22rem] flex justify-end px-5 md:px-0">
             <Link
               href={"/who-are-you"}
               className="flex items-center justify-center py-[0.625rem] px-[1.25rem] rounded-[0.375rem] bg-[#2C71F6] text-white  hover:bg-secondaryBlue"
