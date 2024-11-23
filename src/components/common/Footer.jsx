@@ -80,7 +80,7 @@ const Footer = () => {
 					</ul>
 				</div>
 			</section>
-			<section className='flex justify-between items-center mt-[30px] gap-2'>
+			<section className='flex flex-col md:flex-row gap-y-3 justify-between items-center mt-[30px] gap-2'>
 				<div className='flex justify-start items-center gap-2'>
 					<p className='text-[16px] leading-[24px] font-[400] text-center'>
 						AgenteeHq © {new Date().getFullYear()} All Rights

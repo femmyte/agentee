@@ -94,7 +94,11 @@ export default function DefaultNavbar() {
 					</NavbarItem>
 				</NavbarContent>
 				{/* avatar */}
-				<NavbarContent as='div' justify='end'>
+				<NavbarContent
+					as='div'
+					justify='end'
+					className='hidden lg:flex'
+				>
 					<Dropdown placement='bottom-end'>
 						<DropdownTrigger>
 							<Avatar
