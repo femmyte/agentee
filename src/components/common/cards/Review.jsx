@@ -28,8 +28,8 @@ const Review = () => {
 			</div>
 			<div className='mt-[0.75rem] mb-[0.62rem]'>
 				<p className='text-[#323232] text-[1rem] font-[400] leading-[1.4rem] text-justify'>
-					Lorem Ipsum is simply dummy text of the printing and
-					typesetting industry. Lorem Ipsum has been the industry's
+					Lorem Ipsum is simply dummy text of the printing and
+					typesetting industry. Lorem Ipsum has been the industrys
 					standard dummy text ever since the 1500s, when an unknown
 					printer took a galley of type and scrambled it to make a
 					type specimen bo

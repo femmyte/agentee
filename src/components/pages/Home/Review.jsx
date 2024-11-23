@@ -7,7 +7,7 @@ const Review = () => {
 		<section className='pt-[3.5rem] px-3 md:px-[5.97rem]'>
 			<div>
 				<h3 className='text-center text-[28px] font-[500] leading-[140%] text-primary mt-[8.29px'>
-					Client's Reviews
+					Client&apos;s Reviews
 				</h3>
 				<p className='text-center text-[16px] font-[500] leading-[140%] text-[#89898A]'>
 					We Build With The Trust of Our Clients and Agents

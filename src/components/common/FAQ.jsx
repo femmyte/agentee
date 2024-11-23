@@ -72,7 +72,7 @@ const FAQ = () => {
 				</h3>
 				<p className='text-center text-[16px] font-[500] leading-[140%] text-[#89898A]'>
 					Here are some common questions you might have as either a
-					property owner or a tenant, and the good news is, we've
+					property owner or a tenant, and the good news is, we have
 					already provided the answers for you.
 				</p>
 				<div className='mt-[1.54rem]'>
