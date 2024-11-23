@@ -15,7 +15,7 @@ const Footer = () => {
 					<h1 className='text-[1.25rem] font-[500] leading-[30px] text-primary'>
 						Find your home
 					</h1>
-					<ul className='text-center  md:text-left'>
+					<ul className='text-center  md:text-left dark:text-black'>
 						<li className='text-[16px] leading-[24px] font-[400] mt-[15px]'>
 							Search Location
 						</li>
@@ -25,7 +25,7 @@ const Footer = () => {
 					<h1 className='text-[1.25rem] font-[500] leading-[30px] text-primary'>
 						Products
 					</h1>
-					<ul className='text-center  md:text-left'>
+					<ul className='text-center  md:text-left dark:text-black'>
 						<li className='text-[16px] leading-[24px] font-[400] mt-[15px]'>
 							Agents
 						</li>
@@ -38,7 +38,7 @@ const Footer = () => {
 					<h1 className='text-[1.25rem] font-[500] leading-[30px] text-primary'>
 						Company
 					</h1>
-					<ul className='text-center  md:text-left'>
+					<ul className='text-center  md:text-left dark:text-black'>
 						<li className='text-[16px] leading-[24px] font-[400] mt-[0.75rem]'>
 							About
 						</li>
@@ -54,7 +54,7 @@ const Footer = () => {
 					<h1 className='text-[1.25rem] font-[500] leading-[30px] text-primary'>
 						Legal
 					</h1>
-					<ul className='text-center  md:text-left'>
+					<ul className='text-center  md:text-left dark:text-black'>
 						<li className='text-[16px] leading-[24px] font-[400] mt-[15px]'>
 							Legal Services
 						</li>
@@ -64,10 +64,10 @@ const Footer = () => {
 					</ul>
 				</div>
 				<div className='text-center md:text-left mb-[30px] md:mb-0'>
-					<h1 className='text-[1.25rem] font-[500] leading-[30px]'>
+					<h1 className='text-[1.25rem] font-[500] leading-[30px] text-primary'>
 						Get in Touch
 					</h1>
-					<ul className='text-center  md:text-left'>
+					<ul className='text-center  md:text-left dark:text-black'>
 						<li className='text-[16px] leading-[24px] font-[400] mt-[15px]'>
 							Support@Agentee.com
 						</li>
@@ -81,8 +81,8 @@ const Footer = () => {
 				</div>
 			</section>
 			<section className='flex flex-col md:flex-row gap-y-3 justify-between items-center mt-[30px] gap-2'>
-				<div className='flex justify-start items-center gap-2'>
-					<p className='text-[16px] leading-[24px] font-[400] text-center'>
+				<div className='flex flex-col md:flex-row justify-start items-center gap-2 dark:text-black'>
+					<p className='text-[16px] leading-[24px] font-[400] text-center dark:text-black'>
 						AgenteeHq © {new Date().getFullYear()} All Rights
 						Reserved.
 					</p>

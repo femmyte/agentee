@@ -64,7 +64,7 @@ const FeaturedProperties = () => {
 				/>
 			</div>
 			<div className='flex items-center justify-between'>
-				<p className='font-[500] text-[20px] leading-[140%] text-[#202020] '>
+				<p className='font-[500] text-[20px] leading-[140%] dark:text-white text-[#202020] '>
 					3 Bedroom at Lekki
 				</p>
 				<div className='flex items-center'>
@@ -87,13 +87,13 @@ const FeaturedProperties = () => {
 					<p>July16, 2024</p>
 				</div>
 			</div>
-			<div className='flex justify-between items-center'>
+			<div className='flex flex-col md:flex-row gap-y-3 justify-center md:justify-between items-center'>
 				<div className=''>
 					<div className='flex my-[12px]'>
-						<p className='font-[400] text-[16px] leading-[140%] text-[#323232] '>
+						<p className='font-[400] text-[16px] leading-[140%] dark:text-[#89898A] text-[#323232] '>
 							<span>₦150,000</span> <span>P/A</span>
 						</p>
-						<p className='text-[14px] text-[#323232] leading-[142.857%]'>
+						<p className='text-[14px] dark:text-[#89898A] text-[#323232] leading-[142.857%]'>
 							{' '}
 							· ₦200,000 total Package
 						</p>

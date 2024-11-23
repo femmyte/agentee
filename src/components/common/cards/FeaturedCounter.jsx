@@ -13,7 +13,7 @@ const FeaturedCounter = ({ text, counter, color, icon }) => {
 			}}
 		>
 			<div
-				className={`flex justify-center items-center h-[3rem] w-[3rem] rounded-full bg-[${color}]`}
+				className={`flex justify-center items-center h-[3rem] w-[3rem] rounded-full `} style={{background: color}}
 			>
 				{icon}
 			</div>

@@ -7,7 +7,7 @@ const WhyChooseUs = () => {
 				<h3 className='text-center text-[28px] font-[500] leading-[140%] text-[#202020] mt-[8.29px] mb-[0.5rem]'>
 					Why choose Us
 				</h3>
-				<p className='text-center text-[16px] font-[500] leading-[140%] text-[#89898A]'>
+				<p className='text-center text-[16px] font-[500] leading-[140%] text-[#202020]'>
 					WE CONNECT YOU WITH AGENTS AND HOUSE OWNERS
 				</p>
 			</div>

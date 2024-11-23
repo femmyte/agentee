@@ -84,11 +84,11 @@ const AgentManagement = () => {
 							alt='landlord illustration'
 						></Image>
 					</div>
-					<section className='flex flex-col items-center px-4 md:px-0'>
+					<section className='flex flex-col w-full justify-center items-center px-4 md:px-0'>
 						<p className='font-[600] text-[1rem] leadin mt-[2.6rem] text-[#202020] text-center md:text-left '>
 							Do You Have an Agent Managing Your Property?{' '}
 						</p>
-						<div className='w-full mt-2'>
+						<div className='w-full mt-2 flex flex-col justify-center items-center'>
 							<Select
 								items={agentOption}
 								placeholder='Select an option'
@@ -118,8 +118,8 @@ const AgentManagement = () => {
 								</>
 							)}
 							{option === 'yes' && isOpen && (
-								<div className=''>
-									<p className='font-[600] text-[1rem] leadin my-[2.6rem] text-[#202020] text-center md:text-left '>
+								<div className='w-full'>
+									<p className='font-[600] text-[1rem] leadin my-[2.6rem]  text-[#202020] text-center md:text-left '>
 										Can’t find My agent here
 									</p>
 									<div className=''>
@@ -129,7 +129,7 @@ const AgentManagement = () => {
 											label='Full Name'
 											placeholder='Agent name'
 											labelPlacement='outside'
-											className='max-w-xs mt-1'
+											className='w-full mt-1 dark:text-[#89898A]'
 											value={fullName}
 											onValueChange={setFullName}
 										/>
@@ -141,7 +141,7 @@ const AgentManagement = () => {
 											label='Email'
 											placeholder='you@example.com'
 											labelPlacement='outside'
-											className='max-w-xs mt-1'
+											className='w-full mt-1'
 											value={email}
 											onValueChange={setEmail}
 										/>
@@ -153,7 +153,7 @@ const AgentManagement = () => {
 											label='Phone Number'
 											placeholder='Agent Phone Number'
 											labelPlacement='outside'
-											className='max-w-xs mt-1'
+											className='w-full mt-1'
 											value={phoneNumber}
 											onValueChange={setPhoneNumber}
 										/>

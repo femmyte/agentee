@@ -36,7 +36,7 @@ const Featured = () => {
 				<FeaturedCounter
 					text={'Our Happy Clients'}
 					counter={350}
-					color={'#2C71F6'}
+					color={'#17B530'}
 					icon={<BsEmojiSmile size={18} color='white' />}
 				/>
 			</div>
