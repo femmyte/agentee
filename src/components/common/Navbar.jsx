@@ -67,12 +67,12 @@ export default function DefaultNavbar() {
 				className=' justify-end basis-2/3'
 				justify='end'
 			>
-				<NavbarItem>
+				<NavbarItem className='hidden lg:flex'>
 					<Link color='foreground' href='#'>
 						Post your house
 					</Link>
 				</NavbarItem>
-				<NavbarItem isActive>
+				<NavbarItem className='hidden lg:flex'>
 					<Link href='#' aria-current='page'>
 						Find Agents
 					</Link>
