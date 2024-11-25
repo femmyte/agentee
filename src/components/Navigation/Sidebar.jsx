@@ -5,7 +5,7 @@ import { FiLogOut, FiSettings } from 'react-icons/fi';
 import { DPOLinks, ACLinks, CPLink, commandLink } from '@/links';
 import Link from 'next/link';
 import { useStateContext } from '@/providers/contextProvider';
-import { signOut, useSession } from 'next-auth/react';
+// import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
@@ -29,11 +29,15 @@ const Sidebar = () => {
 			setActiveMenu(false);
 		}
 	};
-
-	let userInfo = session?.data?.user;
+	let userInfo = {
+		user: {
+			role: 'agent',
+		},
+	};
+	// let userInfo = session?.data?.user;
 	let links;
 	let nav;
-	if (userInfo?.role === 'cp') {
+	if (userInfo?.role === 'agent') {
 		links = CPLink;
 		nav = 'cp';
 	} else if (userInfo?.role === 'dpo') {

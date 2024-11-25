@@ -7,6 +7,7 @@ const AuthContext = createContext();
 export const ContextProvider = ({ children }) => {
 	const [activeMenu, setActiveMenu] = useState(true);
 	const [isClicked, setIsClicked] = useState();
+	const [openLogoutModal, setOpenLogoutModal] = useState(false);
 	const [screenSize, setScreenSize] = useState(undefined);
 	const handleClick = (clicked) => {
 		setIsClicked({ ...isClicked, [clicked]: true });
@@ -26,6 +27,8 @@ export const ContextProvider = ({ children }) => {
 				setScreenSize,
 				landlordData,
 				setLandlordData,
+				openLogoutModal,
+				setOpenLogoutModal,
 			}}
 		>
 			{children}
