@@ -7,7 +7,35 @@ import { FaCalendarDays } from 'react-icons/fa6';
 import NextImage from 'next/image';
 import { MdFavoriteBorder, MdOutlineFavorite } from 'react-icons/md';
 
-const FeaturedProperties = () => {
+const carouselItems = [
+	{
+		id: 1,
+		title: 'Item 1',
+		banner: '/images/property.png',
+		images: [
+			'./images/thumbnail1.png',
+			'./images/thumbnail2.png',
+			'./images/thumbnail3.png',
+			'./images/thumbnail4.png',
+			'./images/thumbnail5.png',
+		],
+		agentLink: '',
+		address: 'Lekki, Chevron drive, Around Ibeju lekki',
+		stars: 4.9,
+		price: 500000,
+		dateEnlisted: 'July 16, 2024',
+		totalPackage: 800000,
+		totalViews: 200,
+		todaysView: 2,
+		propertyType: 'Apartment',
+	},
+	{ title: 'Item 2' },
+	{ title: 'Item 3' },
+	{ title: 'Item 4' },
+	{ title: 'Item 5' },
+	{ title: 'Item 6' },
+];
+const FeaturedProperties = ({ item }) => {
 	const [isLove, setIsLove] = useState(false);
 
 	const handleSetLove = (e) => {
@@ -31,14 +59,17 @@ const FeaturedProperties = () => {
 				/>
 			</div>
 			<div className='mt-[8px] grid grid-cols-5 gap-2'>
-				<Image
-					className='w-full'
-					isZoomed
-					// width={240}
-					alt='NextUI Fruit Image with Zoom'
-					src='./images/thumbnail1.png'
-				/>
-				<Image
+				{item.images.map((image, i) => (
+					<Image
+						key={i}
+						className='w-full'
+						isZoomed
+						// width={240}
+						alt='NextUI Fruit Image with Zoom'
+						src={image}
+					/>
+				))}
+				{/* <Image
 					className='w-full'
 					isZoomed
 					alt='NextUI Fruit Image with Zoom'
@@ -61,7 +92,7 @@ const FeaturedProperties = () => {
 					isZoomed
 					alt='NextUI Fruit Image with Zoom'
 					src='/images/thumbnail5.png'
-				/>
+				/> */}
 			</div>
 			<div className='flex items-center justify-between'>
 				<p className='font-[500] text-[20px] leading-[140%] dark:text-white text-[#202020] '>
@@ -69,11 +100,11 @@ const FeaturedProperties = () => {
 				</p>
 				<div className='flex items-center'>
 					<MdStar />
-					<p>4.9 (85)</p>
+					<p>{item.stars} (85)</p>
 				</div>
 			</div>
 			<p className='font-[400] text-[16px] leading-[140%] text-[#89898A] '>
-				Lekki, Chevron drive, Around Ibeju lekki
+				{item.address}
 			</p>
 			<div className='flex justify-between items-center'>
 				<div className='flex items-center gap-2'>
@@ -84,22 +115,22 @@ const FeaturedProperties = () => {
 				</div>
 				<div className='flex items-center gap-2'>
 					<FaCalendarDays />
-					<p>July16, 2024</p>
+					<p>{item.dateEnlisted}</p>
 				</div>
 			</div>
 			<div className='flex flex-col md:flex-row gap-y-3 justify-center md:justify-between items-center'>
 				<div className=''>
 					<div className='flex my-[12px]'>
 						<p className='font-[400] text-[16px] leading-[140%] dark:text-[#89898A] text-[#323232] '>
-							<span>₦150,000</span> <span>P/A</span>
+							<span>{item.price}</span> <span>P/A</span>
 						</p>
 						<p className='text-[14px] dark:text-[#89898A] text-[#323232] leading-[142.857%]'>
 							{' '}
-							· ₦200,000 total Package
+							· {item.totalPackage} total Package
 						</p>
 					</div>
 					<p className='font-[400] text-[16px] leading-[140%] text-[#89898A] '>
-						740 total views, 0 today
+						{item.totalViews} total views, {item.todaysView} today
 					</p>
 				</div>
 				<div className=''>
