@@ -126,19 +126,21 @@ const Navbar = () => {
 					icon={<PiCaretLeftLight />}
 				/>
 				{/* )} */}
-				<Input
-					classNames={{
-						base: 'max-w-full sm:w-[22.8rem] h-[3rem]',
-						mainWrapper: 'h-full',
-						input: 'text-small',
-						inputWrapper:
-							'h-full font-normal text-default-500 bg-white border dark:bg-default-500/20',
-					}}
-					placeholder='Type to search...'
-					size='sm'
-					startContent={<SearchIcon size={18} />}
-					type='search'
-				/>
+				<div className='hidden sm-block'>
+					<Input
+						classNames={{
+							base: 'hidden sm-block max-w-full sm:w-[22.8rem] h-[3rem]',
+							mainWrapper: 'h-full',
+							input: 'text-small',
+							inputWrapper:
+								'h-full font-normal text-default-500 bg-white border dark:bg-default-500/20',
+						}}
+						placeholder='Type to search...'
+						size='sm'
+						startContent={<SearchIcon size={18} />}
+						type='search'
+					/>
+				</div>
 			</div>
 			<div className='flex gap-4 items-center'>
 				<Button

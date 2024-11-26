@@ -27,7 +27,7 @@ const MessageCard = () => {
 const Dashboard = () => {
 	return (
 		<DashboardLayout>
-			<section className='pt-6 px-[2.2rem] bg-[#F1F9F4] min-h-screen'>
+			<section className='pt-6 px-4 md:px-[2.2rem] bg-[#F1F9F4] min-h-screen'>
 				<div className='grid grid-cols-1 md:grid-cols-5 gap-6'>
 					<TopDashboard title={'Pending Transactions'} total={10} />
 					<TopDashboard title={'Transaction'} total={10} />
@@ -169,7 +169,7 @@ const Dashboard = () => {
 						</div>
 					</div>
 					{/* Messages */}
-					<div className='p-8 col-span-1 bg-white rounded-xl flex flex-col items-center justify-center gap-y-[1.44rem]'>
+					<div className='px-4 md:px-8 py-8 col-span-1 bg-white rounded-xl flex flex-col items-center justify-center gap-y-[1.44rem]'>
 						<div className='flex justify-between w-full'>
 							<p className='text-[1.125rem] font[450] text-lightDark'>
 								Messages
