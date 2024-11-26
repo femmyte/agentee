@@ -10,9 +10,10 @@ import { useStateContext } from '@/providers/contextProvider';
 import Image from 'next/image';
 import { FiLogOut } from 'react-icons/fi';
 import Link from 'next/link';
-import { FaUserTie } from 'react-icons/fa';
+import { FaRegBell, FaUserTie } from 'react-icons/fa';
 // import { useSelector } from 'react-redux';
 import { PiCaretLeftLight } from 'react-icons/pi';
+import { FaBell } from 'react-icons/fa6';
 import {
 	Avatar,
 	Button,
@@ -114,7 +115,7 @@ const Navbar = () => {
 			? "CP's Crime Monitoring Portal"
 			: currentUser.role === 'admin' && 'Police Crime Input System';
 	return (
-		<div className='flex justify-between  pt-[0.9rem] items-center p-4'>
+		<div className='flex justify-between  pt-[0.9rem] items-center py-4 px-8'>
 			{/* <Image src={'/images/logo.png'} width={54} height={90} alt='logo' /> */}
 			{/* {!activeMenu && ( */}
 			<div className='flex items-center gap-x-2'>
@@ -139,7 +140,7 @@ const Navbar = () => {
 					type='search'
 				/>
 			</div>
-			<div className='flex gap-2'>
+			<div className='flex gap-4 items-center'>
 				<Button
 					as={Link}
 					color='warning'
@@ -148,6 +149,7 @@ const Navbar = () => {
 				>
 					Post a House
 				</Button>
+				<FaRegBell size={24} />
 				<Dropdown placement='bottom-end'>
 					<DropdownTrigger>
 						<Avatar
