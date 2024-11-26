@@ -19,6 +19,7 @@ const WhoAreYou = () => {
 	};
 
 	const handleSubmit = (e) => {
+		router.push(`/tenant`);
 		e.preventDefault();
 	};
 
