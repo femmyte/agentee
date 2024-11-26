@@ -5,14 +5,16 @@ import {
 	AiOutlineMail,
 	AiOutlineMenu,
 } from 'react-icons/ai';
-import { useSession, signOut } from 'next-auth/react';
+// import { useSession, signOut } from 'next-auth/react';
 import { useStateContext } from '@/providers/contextProvider';
 import Image from 'next/image';
 import { FiLogOut } from 'react-icons/fi';
 import Link from 'next/link';
 import { FaUserTie } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import { PiCaretLeftLight } from 'react-icons/pi';
+import { Button, Input } from '@nextui-org/react';
+import { SearchIcon } from '../common/SearchIcon';
 
 const NavButton = ({ title, customFunc, icon, color, dotColor, num }) => (
 	<div className='relative'>
@@ -42,8 +44,8 @@ const Navbar = () => {
 		pageSubTitle,
 		setOpenLogoutModal,
 	} = useStateContext();
-	const { currentUser } = useSelector((state) => state.user);
-	const { areaCommands } = useSelector((state) => state.shared);
+	// const { currentUser } = useSelector((state) => state.user);
+	// const { areaCommands } = useSelector((state) => state.shared);
 	// const areaCommandName = areaCommands?.filter(
 	// 	(ac) => ac._id === currentUser.areaCommand
 	// );
@@ -92,7 +94,9 @@ const Navbar = () => {
 	// 		: currentUser.role === 'ac'
 	// 		? 'ABEOKUTA AREA COMMAND CRIME STATISTICS'
 	// 		: 'Nigeria Police Force';
-
+	const currentUser = {
+		role: 'agent',
+	};
 	const subTitle =
 		currentUser.role === 'dpo'
 			? `${currentUser.policeDivision.name} Police Station`
@@ -102,28 +106,42 @@ const Navbar = () => {
 			? "CP's Crime Monitoring Portal"
 			: currentUser.role === 'admin' && 'Police Crime Input System';
 	return (
-		<div className='flex justify-between  pt-[0.9rem] items-center px-4'>
+		<div className='flex justify-between  pt-[0.9rem] items-center p-4'>
 			{/* <Image src={'/images/logo.png'} width={54} height={90} alt='logo' /> */}
 			{/* {!activeMenu && ( */}
-			<NavButton
-				title='Menu'
-				customFunc={() => setActiveMenu((prevState) => !prevState)}
-				color='blue'
-				icon={<PiCaretLeftLight />}
-			/>
-			{/* )} */}
-			<div className=''>
-				<h3 className='text-black text-[1.8rem] text-center font-[700] leading-normal '>
-					Nigeria Police Force
-				</h3>
-				<h4 className='text-black text-[1.3rem] text-center font-[600] leading-normal mb-[0.5rem]'>
-					(Ogun State Command)
-				</h4>
-				{/* <p className='text-black text-center text-[1rem] font-[500] leading-normal uppercase'>
-					{subTitle}
-				</p> */}
+			<div className='flex items-center gap-x-2'>
+				<NavButton
+					title='Menu'
+					customFunc={() => setActiveMenu((prevState) => !prevState)}
+					color='blue'
+					icon={<PiCaretLeftLight />}
+				/>
+				{/* )} */}
+				<Input
+					classNames={{
+						base: 'max-w-full sm:w-[22.8rem] h-[3rem]',
+						mainWrapper: 'h-full',
+						input: 'text-small',
+						inputWrapper:
+							'h-full font-normal text-default-500 bg-white border dark:bg-default-500/20',
+					}}
+					placeholder='Type to search...'
+					size='sm'
+					startContent={<SearchIcon size={18} />}
+					type='search'
+				/>
 			</div>
-			<li
+			<div className='flex gap-2'>
+				<Button
+					as={Link}
+					color='warning'
+					href='/signin'
+					className='bg-primary text-white'
+				>
+					Post a House
+				</Button>
+			</div>
+			{/* <li
 				className={`relative group text-white cursor-pointer ${
 					dropDown ? '' : ''
 				}`}
@@ -174,10 +192,10 @@ const Navbar = () => {
 								<span className='capitalize'>logout</span>
 							</button>
 							{/* <Link href={`/${nav}/settings/profile`}>Profile</Link> */}
-						</li>
-					</ul>
+			{/* </li> */}
+			{/* </ul>
 				)}
-			</li>
+			</li> */}
 		</div>
 	);
 };

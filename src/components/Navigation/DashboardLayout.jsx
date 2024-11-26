@@ -1,12 +1,12 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import CenteredModal from '../CenteredModal';
+// import CenteredModal from '../CenteredModal';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
 import { useStateContext } from '@/providers/contextProvider';
-import { signOut } from 'next-auth/react';
+// import { signOut } from 'next-auth/react';
 import { FaWindowClose } from 'react-icons/fa';
-import CirclesBarLoader from '../CircleBarLoader';
+// import CirclesBarLoader from '../CircleBarLoader';
 import { useState } from 'react';
 
 function DashboardLayout({ children }) {
@@ -40,7 +40,7 @@ function DashboardLayout({ children }) {
 					{activeMenu ? (
 						<div
 							className={
-								'w-full h-full md:w-[17.5rem]  fixed sidebar dark:bg-secondary-dark-bg'
+								'w-full h-full md:w-[17.5rem]  fixed sidebar bg-white dark:bg-secondary-dark-bg'
 							}
 						>
 							<Sidebar />
@@ -62,7 +62,7 @@ function DashboardLayout({ children }) {
 								activeMenu && !login
 									? 'md:ml-[17.5rem] w-full'
 									: 'flex-2'
-							} dark:bg-main-bg bg-main-bg min-h-screen w-full`}
+							} dark:bg-main-bg bg-white min-h-screen w-full`}
 					>
 						<div
 							className={`${
@@ -75,9 +75,9 @@ function DashboardLayout({ children }) {
 						</div>
 						<div className=' min-h-screen'>
 							<div className='dark:text-gray-200 dark:bg-main-dark-bg dark:hover:text-white pt-[50px] md:pt-0 '>
-								<div className=' pb-[30px] dark:text-gray-200 dark:bg-main-dark-bg dark:hover:text-white pl-[3rem] '>
+								<div className=' pb-[30px] dark:text-gray-200 dark:bg-main-dark-bg dark:hover:text-white pl-[3rem] z-20 '>
 									{children}
-									<CenteredModal
+									{/* <CenteredModal
 										modalIsOpen={openLogoutModal}
 										setIsOpen={setOpenLogoutModal}
 									>
@@ -127,7 +127,7 @@ function DashboardLayout({ children }) {
 												</button>
 											</div>
 										</div>
-									</CenteredModal>
+									</CenteredModal> */}
 								</div>
 							</div>
 						</div>
@@ -136,7 +136,7 @@ function DashboardLayout({ children }) {
 			</div>
 			{isSignOut && (
 				<div className='loader-bg-white flex-col'>
-					<CirclesBarLoader />
+					{/* <CirclesBarLoader /> */}
 					<h1 className='text-[1.3rem] mt-2'>Signing you out...</h1>
 				</div>
 			)}

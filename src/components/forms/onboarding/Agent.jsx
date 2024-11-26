@@ -137,10 +137,10 @@ const Agent = () => {
 							Back
 						</Link>
 						<Link
-							href={'#'}
+							href={'/agent'}
 							className='flex items-center justify-center py-[0.625rem] px-[1.25rem] rounded-[0.375rem] bg-[#2C71F6] text-white hover:bg-secondaryBlue'
 						>
-							Next
+							Create Account
 						</Link>
 					</div>
 				</div>

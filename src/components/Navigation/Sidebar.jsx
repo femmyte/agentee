@@ -2,7 +2,7 @@ import React from 'react';
 import { MdOutlineCancel } from 'react-icons/md';
 import { PiCaretLeftLight } from 'react-icons/pi';
 import { FiLogOut, FiSettings } from 'react-icons/fi';
-import { DPOLinks, ACLinks, CPLink, commandLink } from '@/links';
+import { AgentLinks, TenantLink, LandlordLinks, adminLink } from '@/links';
 import Link from 'next/link';
 import { useStateContext } from '@/providers/contextProvider';
 // import { signOut, useSession } from 'next-auth/react';
@@ -19,7 +19,7 @@ const Sidebar = () => {
 		setOpenLogoutModal,
 	} = useStateContext();
 	const router = useRouter();
-	const session = useSession();
+	// const session = useSession();
 	// const handleLogout = async () => {
 	// 	const data = await signOut({ redirect: false, callbackUrl: '/' });
 	// 	router.push(data.url);
@@ -30,25 +30,23 @@ const Sidebar = () => {
 		}
 	};
 	let userInfo = {
-		user: {
-			role: 'agent',
-		},
+		role: 'agent',
 	};
 	// let userInfo = session?.data?.user;
 	let links;
 	let nav;
 	if (userInfo?.role === 'agent') {
-		links = CPLink;
-		nav = 'cp';
-	} else if (userInfo?.role === 'dpo') {
-		links = DPOLinks;
-		nav = 'dpo';
-	} else if (userInfo?.role === 'ac') {
-		links = ACLinks;
-		nav = 'ac';
-	} else if (userInfo?.role === 'ac-admin') {
-		links = commandLink;
-		nav = 'ac-admin';
+		links = AgentLinks;
+		nav = 'agent';
+	} else if (userInfo?.role === 'landlord') {
+		links = LandlordLinks;
+		nav = 'landlord';
+	} else if (userInfo?.role === 'tenant') {
+		links = TenantLink;
+		nav = 'tenant';
+	} else if (userInfo?.role === 'admin') {
+		links = adminLink;
+		nav = 'admin';
 	}
 	const pathname = usePathname();
 	const activeLink =
@@ -58,7 +56,7 @@ const Sidebar = () => {
 	return (
 		<>
 			{activeMenu && (
-				<div className='h-screen overflow-y-auto md:overflow-x-hidden  md:hover:overflow-y-auto pb-[10px] pl-[1rem] bg-primaryGray flex flex-col justify-'>
+				<div className='h-screen overflow-y-auto md:overflow-x-hidden  md:hover:overflow-y-auto pb-[10px] pl-[1rem] bg-primaryGray flex flex-col justify- z-50'>
 					<>
 						<div className='flex justify-between items-center'>
 							{/* <Link
@@ -74,7 +72,7 @@ const Sidebar = () => {
 						</Link> */}
 							<div className='relative h-[90px] w-[54px] top-0 left-0'>
 								<Image
-									src={'/images/logo.png'}
+									src={'/images/logo.svg'}
 									fill
 									alt='logo'
 									sizes='(max-width: 400px) 20vw, (max-width: 1200px) 10vw, 5vw'
@@ -97,7 +95,7 @@ const Sidebar = () => {
 								<PiCaretLeftLight className='font-[700] text-black cursor-pointer ml-[10px] text-[2rem]' />
 							</button>
 						</div>
-						<div className='mt-5 w-[225px]'>
+						<div className='mt-5 w-[225px] z-50'>
 							{links?.map((item) => (
 								<div key={item.title}>
 									<p className='text-gray-400 m-3 mt-4 uppercase'>

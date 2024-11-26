@@ -5,7 +5,7 @@ import { HiOutlineUserGroup, HiOutlineDocumentText } from 'react-icons/hi';
 import { BsBarChartFill } from 'react-icons/bs';
 import { BiPieChartAlt } from 'react-icons/bi';
 import { PiChartDonut } from 'react-icons/pi';
-export const DPOLinks = [
+export const AgentLinks = [
 	{
 		title: 'Analysis',
 		links: [
@@ -15,24 +15,19 @@ export const DPOLinks = [
 				icon: <AiFillDashboard size={20} />,
 			},
 			{
-				address: 'cases',
-				name: 'case Distribution',
+				address: 'message',
+				name: 'Message',
 				icon: <PiChartDonut size={20} />,
 			},
 			{
-				address: 'locations',
-				name: 'location Distribution',
+				address: 'review',
+				name: 'Review',
 				icon: <BiPieChartAlt size={20} />,
-			},
-			{
-				address: 'crime-distribution',
-				name: 'crime Statistics',
-				icon: <BsBarChartFill size={20} />,
 			},
 		],
 	},
 ];
-export const ACLinks = [
+export const LandlordLinks = [
 	{
 		title: 'Analysis',
 		links: [
@@ -65,7 +60,7 @@ export const ACLinks = [
 	},
 ];
 
-export const CPLink = [
+export const TenantLink = [
 	{
 		title: 'Analysis',
 		links: [
