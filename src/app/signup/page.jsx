@@ -1,7 +1,15 @@
 'use client';
 import SwitchMode from '@/components/common/SwitchMode';
 import Google from '@/components/common/buttons/Google';
-import { Button, Input } from '@nextui-org/react';
+import {
+	Button,
+	Input,
+	Modal,
+	ModalBody,
+	ModalContent,
+	ModalFooter,
+	ModalHeader,
+} from '@nextui-org/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -9,12 +17,16 @@ import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import { BsFillEyeFill } from 'react-icons/bs';
 import { FaEyeSlash } from 'react-icons/fa';
+import { createAccount } from '@/hooks/commonService';
+import Cookies from 'js-cookie';
+
 const Registration = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [phoneNumber, setPhoneNumber] = useState('');
 	const [fullName, setFullName] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
+	const [showConfirmModal, setShowConfirmModal] = useState(false);
 	const [isActive, setIsActive] = useState(true);
 	const [isVisible, setIsVisible] = React.useState(false);
 	const [isConfirmVisible, setIsConfirmVisible] = React.useState(false);
@@ -45,25 +57,28 @@ const Registration = () => {
 		setIsLoading(true);
 
 		try {
-			const { data } = await createAccoun('/users/signup', {
+			const { data } = await createAccount('/signup', {
 				email: email?.toLowerCase(),
 				password: password,
-				fullName: fullName,
-				phoneNumber: phoneNumber,
+				full_name: fullName,
+				phone_number: phoneNumber,
 			});
-			toast.success(data.message);
+			Cookies.set('email', email, {
+				expires: 1 / 24, // Expires in 1 hour
+				path: '/',
+			});
+
+			// Redirect to OTP verification page
+
+			toast.success(
+				'Account created successfully redirecting to account confirmation page'
+			);
+			router.push('/signup/confirm');
+			// toast.success(data.body.message || 'Account created successfully');
 			console.log(data);
 		} catch (error) {
-			console.log(error?.response?.data?.message);
+			console.log(error);
 			toast.error(error?.response?.data.message);
-			// if (error?.response?.data?.message) {
-			// 	setMessage({
-			// 		type: 'error',
-			// 		title: 'Error signing up',
-			// 		content: error?.response?.data.message,
-			// 	});
-			// 	setIsOpen(true);
-			// }
 		} finally {
 			setIsLoading(false);
 			setEmail('');
@@ -321,6 +336,43 @@ const Registration = () => {
 					/>
 				</div>
 			</div>
+			{/* Confirmation Modal */}
+			<Modal
+				isOpen={showConfirmModal}
+				onClose={() => setShowConfirmModal(false)}
+			>
+				<ModalContent>
+					<ModalHeader className='items-center justify-center mt-3'>
+						<img
+							src='/icons/sent.svg'
+							width={50}
+							height={50}
+							alt=''
+						/>
+					</ModalHeader>
+					<ModalBody className='items-center justify-center'>
+						<h4 className='text-2xl font-semibold mt-4'>
+							Message Sent Successfully!
+						</h4>
+						<p>
+							Your Invitation Message has been successfully sent
+							to the staff. They will receive an email with
+							further instructions shortly.
+						</p>
+					</ModalBody>
+					<ModalFooter>
+						<Button
+							color='danger'
+							onClick={() => {
+								setShowConfirmModal(false);
+							}}
+							className='w-full'
+						>
+							Go Back
+						</Button>
+					</ModalFooter>
+				</ModalContent>
+			</Modal>
 		</>
 	);
 };

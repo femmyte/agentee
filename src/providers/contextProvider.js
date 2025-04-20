@@ -2,6 +2,7 @@
 
 import { useContext, createContext } from 'react';
 import { useState } from 'react';
+
 const AuthContext = createContext();
 
 export const ContextProvider = ({ children }) => {

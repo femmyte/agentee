@@ -1,15 +1,129 @@
 'use client';
 import Google from '@/components/common/buttons/Google';
-import { Input } from '@nextui-org/react';
+import { Button, ButtonGroup, Input } from '@nextui-org/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import { BsFillEyeFill } from 'react-icons/bs';
 import { FaEyeSlash } from 'react-icons/fa';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import toast from 'react-hot-toast';
 const Registration = () => {
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [error, setError] = useState('');
+	const [loading, setLoading] = useState(false);
+	const router = useRouter();
 	const [isVisible, setIsVisible] = React.useState(false);
 
 	const toggleVisibility = () => setIsVisible(!isVisible);
+
+	const handleLogin = async (e) => {
+		e.preventDefault();
+		setError('');
+		setLoading(true);
+
+		try {
+			// Call our internal API route instead of the external endpoint directly
+			const response = await axios.post('/api/auth', {
+				email,
+				password,
+			});
+			console.log('Login response:', response.data);
+
+			if (response.data.body && response.data.body.success) {
+				// Extracting tokens from response
+				const responseData = response.data;
+				let access_token, refresh_token;
+
+				// Check different possible paths where tokens might be located
+				if (responseData.body?.data?.access_token) {
+					access_token = responseData.body.data.access_token;
+					refresh_token = responseData.body.data.refresh_token;
+				} else if (responseData.data?.access_token) {
+					access_token = responseData.data.access_token;
+					refresh_token = responseData.data.refresh_token;
+				} else if (responseData.body?.data?.id_token) {
+					// If using id_token instead of access_token (from API docs)
+					access_token = responseData.body.data.id_token;
+					refresh_token = responseData.body.data.refresh_token;
+				}
+
+				if (!access_token || !refresh_token) {
+					throw new Error('Auth tokens not found in the response');
+				}
+
+				// Set cookies first before navigation
+				Cookies.set('authToken', access_token, {
+					// expires: new Date(new Date().getTime() + 15 * 60 * 1000), // 15 minutes
+					expires: 1,
+					path: '/',
+					secure: process.env.NODE_ENV === 'production',
+					sameSite: 'Strict',
+				});
+
+				Cookies.set('refreshToken', refresh_token, {
+					expires: 1, // 1 day
+					path: '/',
+					secure: process.env.NODE_ENV === 'production',
+					sameSite: 'Strict',
+				});
+
+				toast.success('Verification successful!');
+
+				// Add immediate visual feedback
+				document.body.style.cursor = 'wait';
+
+				setTimeout(() => {
+					// Double checking the cookie is set before redirecting
+					if (Cookies.get('authToken')) {
+						toast.success(
+							'Welcome back! Redirecting to dashboard...'
+						);
+						router.push('/admin-dashboard');
+					} else {
+						toast.error('Authentication failed. Please try again.');
+						setError('Token not saved properly. Please try again.');
+					}
+				}, 1000);
+			} else {
+				setError(response.data.body?.message || 'Verification failed');
+				toast.error(
+					response.data.body?.message || 'Verification failed'
+				);
+			}
+		} catch (err) {
+			console.log('Login error:', err);
+
+			const status = err.response?.status;
+			const apiMessage = err.response?.data?.body?.message;
+
+			let userFriendlyMessage =
+				'An unexpected error occurred. Please try again.';
+
+			if (status === 400) {
+				userFriendlyMessage =
+					'Invalid email or password. Please check your credentials.';
+			} else if (status === 403) {
+				userFriendlyMessage =
+					'Your account is not authorized. Please contact support.';
+			} else if (status === 500) {
+				userFriendlyMessage = 'Server error. Please try again later.';
+			} else if (apiMessage) {
+				userFriendlyMessage = apiMessage;
+			}
+
+			toast.error(userFriendlyMessage);
+
+			setError(userFriendlyMessage);
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	return (
 		<div className='grid grid-cols-1 md:grid-cols-2 md:mh-screen py-[3.47rem] px-[2.8rem]  bg-white'>
 			<div className='col-span-1 w-full flex justify-center items-center'>
@@ -44,6 +158,9 @@ const Registration = () => {
 								className=' font-[400] text-0.875rem] leading-[1.225rem] text-[#89898A] w-full'
 								placeholder='Enter your email'
 								id='email'
+								value={email}
+								onChange={(e) => setEmail(e.target.value)}
+								required
 							></Input>
 						</div>
 						<div className=' mb-[1rem]'>
@@ -59,6 +176,11 @@ const Registration = () => {
 									color='#E9E9EB'
 									variant='bordered'
 									placeholder='Enter your password'
+									value={password}
+									onChange={(e) =>
+										setPassword(e.target.value)
+									}
+									required
 									// labelPlacement='outside'
 									endContent={
 										<button
@@ -116,12 +238,15 @@ const Registration = () => {
 							</Link>
 						</div>
 						<div className='mt-[1.5rem]'>
-							<Link
+							<Button
+								onClick={handleLogin}
+								isLoading={loading}
+								disabled={!email || !password}
 								href={'/welcome'}
 								className='flex items-center justify-center py-[0.625rem] px-[1.25rem] rounded-[0.375rem] bg-[#2C71F6]  hover:bg-secondaryBlue text-white w-full'
 							>
-								Sign IN
-							</Link>
+								Sign In
+							</Button>
 						</div>
 						<Google text={'Sign in with Google'} />
 					</div>

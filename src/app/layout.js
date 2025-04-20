@@ -4,6 +4,7 @@ import NextAuthProvider from '@/providers/NextAuthProvider';
 import ReactQuery from '@/providers/ReactQueryProvider';
 import { ContextProvider } from '@/providers/contextProvider';
 import NextUIProvider from '@/providers/NextUIProvider';
+import { Toaster } from 'react-hot-toast';
 // const inter = Inter({ subsets: ['latin'] });
 const roboto = Roboto({
 	subsets: ['latin'],
@@ -23,7 +24,21 @@ export default function RootLayout({ children }) {
 				<NextAuthProvider>
 					<ReactQuery>
 						<ContextProvider>
-							<NextUIProvider>{children}</NextUIProvider>
+							<NextUIProvider>
+								<Toaster
+									position='top-right'
+									reverseOrder={false}
+									toastOptions={{
+										duration: 6000,
+										style: {
+											borderRadius: '8px',
+											background: '#333',
+											color: '#fff',
+										},
+									}}
+								/>
+								{children}
+							</NextUIProvider>
 						</ContextProvider>
 					</ReactQuery>
 				</NextAuthProvider>
