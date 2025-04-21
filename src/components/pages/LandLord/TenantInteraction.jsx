@@ -5,9 +5,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import FileUpload from '@/components/common/FileUpload';
 import { useRouter } from 'next/navigation';
-import { createAccount } from '@/hooks/commonService';
+import { AuthPost } from '@/hooks/commonService';
 import { useStateContext } from '@/providers/contextProvider';
 import { Button } from '@nextui-org/react';
+import Cookies from 'js-cookie';
+import toast from 'react-hot-toast';
 
 const TenantInteraction = () => {
 	const { landlordData, setLandlordData } = useStateContext();
@@ -18,6 +20,7 @@ const TenantInteraction = () => {
 		title: '',
 		content: '',
 	});
+	const [loading, setLoading] = useState(false);
 	const checkHandler = (item) => {
 		if (item === 'yes') {
 			setOption(true);
@@ -29,6 +32,7 @@ const TenantInteraction = () => {
 	const handleRoute = () => {
 		router.back();
 	};
+
 	// Retrieve the session and router so that we can navigate
 	// the user back home if they are already authenticated
 	// const { status } = useSession();
@@ -40,15 +44,54 @@ const TenantInteraction = () => {
 	// }
 	const handleNext = (e) => {
 		e.preventDefault();
-		setLandlordData({
-			...landlordData,
-			tenantInteraction: option,
-		});
+		const storedDetails = JSON.parse(sessionStorage.getItem('details'));
+		storedDetails.interact_with_tenant = option;
+		sessionStorage.setItem('details', JSON.stringify(storedDetails));
+
 		router.replace('/landlord/onboarding/agent-option');
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
+		const accessToken = Cookies.get('accessToken');
+		const role = Cookies.get('role');
+
+		setLoading(true);
+
+		try {
+			const storedDetails = JSON.parse(sessionStorage.getItem('details'));
+			if (storedDetails) {
+				storedDetails.interact_with_tenant = option;
+				const { data } = await AuthPost(
+					'/update-user-data',
+					{
+						role: 'landlord',
+						details: storedDetails,
+					},
+					accessToken
+				);
+
+				console.log(data);
+				if (data.body.success) {
+					toast.success(
+						data.body.message ||
+							'Account updated successfully redirecting to your dashboard'
+					);
+					router.push(`/landlord`);
+					Cookies.remove('role');
+					sessionStorage.removeItem('details');
+				} else {
+					toast.error(data.errorMessage || 'Something went wrong');
+				}
+			}
+
+			// toast.success(data.body.message || 'Account created successfully');
+		} catch (error) {
+			console.log(error);
+			toast.error(error?.response?.data.message);
+		} finally {
+			setLoading(false);
+		}
 	};
 	return (
 		<div className='h-screen bg-[#F8F9FB] overflow-x-hidden'>
@@ -117,6 +160,8 @@ const TenantInteraction = () => {
 								href={'#'}
 								className='flex items-center justify-center py-[0.625rem] px-[1.25rem] rounded-[0.375rem] bg-[#2C71F6] text-white hover:bg-secondaryBlue w-full md:w-[6.87rem]'
 								onClick={handleSubmit}
+								isLoading={loading}
+								isDisabled={!isActive}
 							>
 								Submit
 							</Button>

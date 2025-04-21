@@ -82,7 +82,7 @@ const Registration = () => {
 					secure: process.env.NODE_ENV === 'production',
 					sameSite: 'Strict',
 				});
-				Cookies.set('user', decoded, {
+				Cookies.set('user', JSON.stringify(decoded), {
 					expires: 1, // 1 day
 					path: '/',
 					secure: process.env.NODE_ENV === 'production',

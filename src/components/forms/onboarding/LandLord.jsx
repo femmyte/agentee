@@ -1,13 +1,15 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Nav from '@/components/common/Nav';
 import Image from 'next/image';
 import Link from 'next/link';
 import FileUpload from '@/components/common/FileUpload';
 import { useRouter } from 'next/navigation';
-import { createAccount } from '@/hooks/commonService';
+import { AuthPost } from '@/hooks/commonService';
 import { useStateContext } from '@/providers/contextProvider';
 import { Button } from '@nextui-org/react';
+import Cookies from 'js-cookie';
+import toast from 'react-hot-toast';
 
 const LandLord = () => {
 	const { landlordData, setLandlordData } = useStateContext();
@@ -23,7 +25,9 @@ const LandLord = () => {
 		content: '',
 	});
 	const [isOpen, setIsOpen] = useState(false);
-	const [isLoading, setIsLoading] = useState(false);
+	const [loading, setLoading] = useState(false);
+	const [imagePreview, setImagePreview] = useState(null);
+	const [imageBase64, setImageBase64] = useState(null);
 
 	// Retrieve the session and router so that we can navigate
 	// the user back home if they are already authenticated
@@ -36,43 +40,104 @@ const LandLord = () => {
 	// 	router.replace('/auth/overview');
 	// }
 
-	const handleNext = (e) => {
-		e.preventDefault();
-		setLandlordData({
-			...landlordData,
-			country: country,
-			state: state,
-			city: city,
-			address: address,
-			about: about,
-		});
-		router.replace('/landlord/onboarding/tenant-interaction');
-		console.log(landlordData);
+	// const handleNext = (e) => {
+	// 	e.preventDefault();
+	// 	setLandlordData({
+	// 		...landlordData,
+	// 		country: country,
+	// 		state: state,
+	// 		city: city,
+	// 		address: address,
+	// 		about: about,
+	// 	});
+	// 	router.replace('/landlord/onboarding/tenant-interaction');
+	// 	console.log(landlordData);
+	// };
+
+	useEffect(() => {
+		const allFieldsFilled = country && city && state && address && about;
+
+		setIsActive(allFieldsFilled);
+	}, [country, city, state, address, about]);
+
+	// Convert image to Base64
+	const handleImageChange = (event) => {
+		const file = event.target.files?.[0];
+
+		if (file) {
+			const reader = new FileReader();
+			reader.readAsDataURL(file);
+			reader.onload = () => {
+				setImageBase64(reader.result); // Extract base64 string
+				setImagePreview(URL.createObjectURL(file));
+			};
+		}
 	};
 
-	// const handleSubmit = async (e) => {
-	// 	e.preventDefault();
+	const handleNext = async (e) => {
+		e.preventDefault();
+		const accessToken = Cookies.get('accessToken');
+		const role = Cookies.get('role');
 
-	// 	setIsLoading(true);
+		setLoading(true);
 
-	// 	try {
-	// 		const { data } = await createAccount('/users/signup', {
-	// 			email: email?.toLowerCase(),
-	// 			password: password,
-	// 			fullName: fullName,
-	// 			phoneNumber: phoneNumber,
-	// 		});
-	// 		toast.success(data.message);
-	// 		console.log(data);
-	// 	} catch (error) {
-	// 		console.log(error?.response?.data?.message);
-	// 		toast.error(error?.response?.data.message);
-	// 	} finally {
-	// 		setIsLoading(false);
-	// 		setEmail('');
-	// 		setPassword('');
-	// 	}
-	// };
+		try {
+			const { data: userImage } = await AuthPost(
+				'/upload',
+				{
+					files: [
+						{
+							folder: 'landlord',
+							content: {
+								doc_name: 'passport_photo.jpg',
+								document: imageBase64,
+							},
+						},
+					],
+				},
+				accessToken,
+				'core'
+			);
+
+			if (userImage.body.success) {
+				toast.success(
+					userImage.body.message || 'Image uploaded successfully'
+				);
+				console.log(userImage.body.message);
+				const details = {
+					country,
+					city,
+					state,
+					address,
+					about,
+					image: userImage.body.data.urls[0].url,
+					doc_name: userImage.body.data.urls[0].doc_name,
+				};
+				// Cookies.set('details', JSON.stringify(details), {
+				// 	expires: 1, // 1 day
+				// 	path: '/',
+				// 	secure: process.env.NODE_ENV === 'production',
+				// 	sameSite: 'Strict',
+				// });
+				sessionStorage.setItem('details', JSON.stringify(details));
+				router.replace('/landlord/onboarding/tenant-interaction');
+			} else {
+				toast.error(
+					data.errorMessage ||
+						userImage.body.message ||
+						'Something went wrong'
+				);
+			}
+
+			// toast.success(data.body.message || 'Account created successfully');
+		} catch (error) {
+			console.log(error);
+			toast.error(error?.response?.data.message);
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	return (
 		<div className='h-screen bg-[#F8F9FB] overflow-x-hidden'>
 			<Nav link={'/confirmation'} />
@@ -187,7 +252,36 @@ const LandLord = () => {
 						<p className='font-[500] text-[0.875rem] leading-[1.225rem] mb-[0.25rem] text-[#202020]'>
 							Upload Profile Picture
 						</p>
-						<FileUpload />
+						<div className='border-dashed border-2 border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center'>
+							{imagePreview ? (
+								<Image
+									src={imagePreview}
+									alt='Logo Preview'
+									width={100}
+									height={100}
+									className='rounded-lg'
+								/>
+							) : (
+								<p className='text-gray-400'>
+									Drag and drop image here, or click to add
+									image.
+								</p>
+							)}
+							<input
+								type='file'
+								accept='image/*'
+								onChange={handleImageChange}
+								className='hidden'
+								id='fileInput'
+								required
+							/>
+							<label
+								htmlFor='fileInput'
+								className='mt-3 cursor-pointer bg-default-300 text-black px-4 py-2 rounded-lg'
+							>
+								Add Image
+							</label>
+						</div>
 					</div>
 					<div className='mt-[3.43rem] flex justify-center md:justify-end gap-x-[0.75rem]'>
 						<Link
@@ -197,8 +291,9 @@ const LandLord = () => {
 							Back
 						</Link>
 						<Button
-							// href={'#'}
 							onClick={handleNext}
+							isLoading={loading}
+							isDisabled={!isActive}
 							className='flex items-center justify-center py-[0.625rem] px-[1.25rem] rounded-[0.375rem] bg-[#2C71F6] text-white hover:bg-secondaryBlue'
 						>
 							Next
