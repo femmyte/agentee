@@ -6,11 +6,12 @@ import Link from 'next/link';
 import React from 'react';
 import { BsFillEyeFill } from 'react-icons/bs';
 import { FaEyeSlash } from 'react-icons/fa';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import toast from 'react-hot-toast';
+import { jwtDecode } from 'jwt-decode';
 const Registration = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -37,27 +38,30 @@ const Registration = () => {
 			if (response.data.body && response.data.body.success) {
 				// Extracting tokens from response
 				const responseData = response.data;
-				let access_token, refresh_token;
+				let access_token, refresh_token, auth_token;
 
 				// Check different possible paths where tokens might be located
 				if (responseData.body?.data?.access_token) {
 					access_token = responseData.body.data.access_token;
 					refresh_token = responseData.body.data.refresh_token;
+					auth_token = responseData.body.data.id_token;
 				} else if (responseData.data?.access_token) {
 					access_token = responseData.data.access_token;
 					refresh_token = responseData.data.refresh_token;
-				} else if (responseData.body?.data?.id_token) {
-					// If using id_token instead of access_token (from API docs)
-					access_token = responseData.body.data.id_token;
-					refresh_token = responseData.body.data.refresh_token;
+					auth_token = responseData.data.id_token;
 				}
 
 				if (!access_token || !refresh_token) {
 					throw new Error('Auth tokens not found in the response');
 				}
 
+				// const decoded = decodeToken(auth_token);
+				// console.log('Decoded JWT:', decoded);
+				const decoded = jwtDecode(auth_token);
+				// console.log('Decoded JWT:', decoded);
+
 				// Set cookies first before navigation
-				Cookies.set('authToken', access_token, {
+				Cookies.set('accessToken', access_token, {
 					// expires: new Date(new Date().getTime() + 15 * 60 * 1000), // 15 minutes
 					expires: 1,
 					path: '/',
@@ -72,6 +76,18 @@ const Registration = () => {
 					sameSite: 'Strict',
 				});
 
+				Cookies.set('authToken', auth_token, {
+					expires: 1, // 1 day
+					path: '/',
+					secure: process.env.NODE_ENV === 'production',
+					sameSite: 'Strict',
+				});
+				Cookies.set('user', decoded, {
+					expires: 1, // 1 day
+					path: '/',
+					secure: process.env.NODE_ENV === 'production',
+					sameSite: 'Strict',
+				});
 				toast.success('Verification successful!');
 
 				// Add immediate visual feedback
@@ -83,7 +99,22 @@ const Registration = () => {
 						toast.success(
 							'Welcome back! Redirecting to dashboard...'
 						);
-						router.push('/admin-dashboard');
+
+						console.log(decoded?.['custom:completed_setup']);
+
+						if (decoded?.['custom:completed_setup'] === 'false') {
+							router.push('/welcome');
+						} else {
+							if (decoded?.['custom:user-type'] === 'agent') {
+								router.push('/agent/dashboard');
+							} else if (
+								decoded?.['custom:user-type'] === 'landlord'
+							) {
+								router.push('/landlord/dashboard');
+							} else {
+								router.push('/tenant/dashboard');
+							}
+						}
 					} else {
 						toast.error('Authentication failed. Please try again.');
 						setError('Token not saved properly. Please try again.');

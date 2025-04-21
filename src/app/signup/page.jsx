@@ -13,7 +13,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import { BsFillEyeFill } from 'react-icons/bs';
 import { FaEyeSlash } from 'react-icons/fa';
@@ -45,9 +45,13 @@ const Registration = () => {
 	// if (status === 'authenticated') {
 	// 	router.replace('/auth/overview');
 	// }
-	// if (!fullName && !phoneNumber && !email && !password && !confirmPassword) {
-	// 	setIsActive(false);
-	// }
+
+	useEffect(() => {
+		const allFieldsFilled =
+			fullName && phoneNumber && email && password && confirmPassword;
+
+		setIsActive(allFieldsFilled);
+	}, [fullName, phoneNumber, email, password, confirmPassword]);
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		if (password !== confirmPassword) {
@@ -68,14 +72,19 @@ const Registration = () => {
 				path: '/',
 			});
 
-			// Redirect to OTP verification page
+			if (data.body.success) {
+				// Redirect to OTP verification page
 
-			toast.success(
-				'Account created successfully redirecting to account confirmation page'
-			);
-			router.push('/signup/confirm');
+				toast.success(
+					'Account created successfully redirecting to account confirmation page'
+				);
+				router.push('/signup/confirm');
+				// toast.success(data.body.message || 'Account created successfully');
+				console.log(data);
+			} else {
+				toast.error(data.errorMessage);
+			}
 			// toast.success(data.body.message || 'Account created successfully');
-			console.log(data);
 		} catch (error) {
 			console.log(error);
 			toast.error(error?.response?.data.message);
@@ -127,6 +136,7 @@ const Registration = () => {
 									}
 									name={fullName}
 									value={fullName}
+									isRequired
 								></input>
 							</div>
 							<div className=' mb-[1rem]'>
@@ -144,6 +154,7 @@ const Registration = () => {
 									onChange={(e) => setEmail(e.target.value)}
 									name={email}
 									value={email}
+									isRequired
 								></input>
 							</div>
 							<div className=' mb-[1rem]'>
@@ -163,6 +174,7 @@ const Registration = () => {
 									}
 									name={phoneNumber}
 									value={phoneNumber}
+									isRequired
 								></input>
 							</div>
 							<div className=' mb-[1rem]'>
@@ -199,6 +211,7 @@ const Registration = () => {
 									}
 									name={password}
 									value={password}
+									isRequired
 								/>
 							</div>
 							<div className=' mb-[1rem]'>
@@ -242,6 +255,7 @@ const Registration = () => {
 									}
 									name={confirmPassword}
 									value={confirmPassword}
+									isRequired
 								/>
 							</div>
 							{/* <div className='flex justify-between w-full gap-x-2 border border-[#E9E9EB] rounded-[0.375rem]'>
@@ -295,6 +309,7 @@ const Registration = () => {
 									type='checkbox'
 									className='w-4 h-4 border border-[#E9E9EB]'
 									id='remember_me'
+									isRequired
 								/>
 								<label
 									htmlFor='remember_me'
@@ -307,7 +322,7 @@ const Registration = () => {
 								<Button
 									className=' disabled:cursor-not-allowed flex items-center justify-center py-[0.625rem] px-[1.25rem] rounded-[0.375rem] bg-[#2C71F6]  hover:bg-secondaryBlue text-white w-full'
 									onClick={handleSubmit}
-									// disabled={isActive}
+									isDisabled={!isActive}
 								>
 									Sign up
 								</Button>

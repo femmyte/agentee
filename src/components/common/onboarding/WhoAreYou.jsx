@@ -4,10 +4,16 @@ import Nav from '../Nav';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { jwtDecode } from 'jwt-decode';
+import { AuthPost } from '@/hooks/commonService';
+import Cookies from 'js-cookie';
+import toast from 'react-hot-toast';
+import { Button } from '@nextui-org/react';
 
 const WhoAreYou = () => {
 	const [user, setUser] = useState('');
 	const router = useRouter();
+	const [loading, setLoading] = useState(false);
 
 	const checkHandler = (item) => {
 		setUser(item);
@@ -15,12 +21,52 @@ const WhoAreYou = () => {
 	const changeRoute = () => {
 		// if (user == 'landlord') {
 		router.push(`/${user}/onboarding/register`);
+		Cookies.set('role', user, {
+			expires: 1, // 1 day
+			path: '/',
+			secure: process.env.NODE_ENV === 'production',
+			sameSite: 'Strict',
+		});
 		// }
 	};
 
-	const handleSubmit = (e) => {
-		router.push(`/tenant`);
+	const handleSubmit = async (e) => {
 		e.preventDefault();
+		const accessToken = Cookies.get('accessToken');
+		setLoading(true);
+
+		try {
+			const { data } = await AuthPost(
+				'/update-user-data',
+				{
+					role: user,
+				},
+				accessToken
+			);
+
+			console.log(data);
+			if (data.body.success) {
+				Cookies.set('role', user, {
+					expires: 1, // 1 day
+					path: '/',
+					secure: process.env.NODE_ENV === 'production',
+					sameSite: 'Strict',
+				});
+				toast.success(
+					data.body.message ||
+						'Account updated successfully redirecting to your dashboard'
+				);
+				router.push(`/tenant`);
+			} else {
+				toast.error(data.errorMessage);
+			}
+			// toast.success(data.body.message || 'Account created successfully');
+		} catch (error) {
+			console.log(error);
+			toast.error(error?.response?.data.message);
+		} finally {
+			setLoading(false);
+		}
 	};
 
 	return (
@@ -120,14 +166,15 @@ const WhoAreYou = () => {
 							Back
 						</Link>
 						{user === 'tenant' ? (
-							<button
+							<Button
 								// href={"/agent-onboarding"}
 								className='flex items-center justify-center py-[0.625rem] px-[1.25rem] rounded-[0.375rem] bg-[#2C71F6] text-white hover:bg-secondaryBlue disabled:bg-[#BBD1FC]'
 								onClick={handleSubmit}
 								disabled={!user}
+								isLoading={loading}
 							>
 								Submit
-							</button>
+							</Button>
 						) : (
 							<button
 								// href={"/agent-onboarding"}
