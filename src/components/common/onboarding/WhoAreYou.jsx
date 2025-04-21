@@ -70,9 +70,9 @@ const WhoAreYou = () => {
 		}
 	};
 
-	if (loading) {
-		return <FullLoader />;
-	}
+	// if (loading) {
+	// 	return <FullLoader />;
+	// }
 
 	return (
 		<div className='h-screen bg-[#F8F9FB] overflow-x-hidden'>
