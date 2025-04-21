@@ -19,6 +19,7 @@ import { BsFillEyeFill } from 'react-icons/bs';
 import { FaEyeSlash } from 'react-icons/fa';
 import { createAccount } from '@/hooks/commonService';
 import Cookies from 'js-cookie';
+import FullLoader from '@/components/loaders/FullLoader';
 
 const Registration = () => {
 	const [email, setEmail] = useState('');
@@ -71,6 +72,7 @@ const Registration = () => {
 				expires: 1 / 24, // Expires in 1 hour
 				path: '/',
 			});
+			console.log('data', data);
 
 			if (data.body.success) {
 				// Redirect to OTP verification page
@@ -82,19 +84,24 @@ const Registration = () => {
 				// toast.success(data.body.message || 'Account created successfully');
 				console.log(data);
 			} else {
-				toast.error(data.errorMessage);
+				toast.error(
+					data?.errorMessage ||
+						data?.body?.message ||
+						'An error occurred'
+				);
 			}
 			// toast.success(data.body.message || 'Account created successfully');
 		} catch (error) {
 			console.log(error);
+			// console.log(error);
 			toast.error(error?.response?.data.message);
 		} finally {
 			setIsLoading(false);
-			setEmail('');
-			setPassword('');
 		}
 	};
-
+	// if (isLoading) {
+	// 	return <FullLoader />;
+	// }
 	return (
 		<>
 			<ToastContainer />
@@ -322,6 +329,7 @@ const Registration = () => {
 								<Button
 									className=' disabled:cursor-not-allowed flex items-center justify-center py-[0.625rem] px-[1.25rem] rounded-[0.375rem] bg-[#2C71F6]  hover:bg-secondaryBlue text-white w-full'
 									onClick={handleSubmit}
+									isLoading={isLoading}
 									isDisabled={!isActive}
 								>
 									Sign up

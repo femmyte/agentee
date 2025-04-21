@@ -9,6 +9,7 @@ import { AuthPost } from '@/hooks/commonService';
 import Cookies from 'js-cookie';
 import toast from 'react-hot-toast';
 import { Button } from '@nextui-org/react';
+import FullLoader from '@/components/loaders/FullLoader';
 
 const WhoAreYou = () => {
 	const [user, setUser] = useState('');
@@ -68,6 +69,10 @@ const WhoAreYou = () => {
 			setLoading(false);
 		}
 	};
+
+	if (loading) {
+		return <FullLoader />;
+	}
 
 	return (
 		<div className='h-screen bg-[#F8F9FB] overflow-x-hidden'>
