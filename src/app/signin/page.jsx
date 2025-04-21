@@ -106,13 +106,13 @@ const Registration = () => {
 							router.push('/welcome');
 						} else {
 							if (decoded?.['custom:user-type'] === 'agent') {
-								router.push('/agent/dashboard');
+								router.push('/agent/');
 							} else if (
 								decoded?.['custom:user-type'] === 'landlord'
 							) {
-								router.push('/landlord/dashboard');
+								router.push('/landlord/');
 							} else {
-								router.push('/tenant/dashboard');
+								router.push('/tenant/');
 							}
 						}
 					} else {
