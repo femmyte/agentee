@@ -26,6 +26,19 @@ export function AuthPost(url, data, accessToken) {
 	);
 }
 
+export function InviteAgent(url, data, accessToken) {
+	return http.post(
+		url,
+		data,
+		{
+			headers: {
+				Authorization: `${accessToken}`,
+			},
+		},
+		'open'
+	);
+}
+
 export function getUserInfo(id, accessToken) {
 	return http.get(
 		`/${apiPath}/${id}`,

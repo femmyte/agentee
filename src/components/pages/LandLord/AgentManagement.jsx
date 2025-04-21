@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import FileUpload from '@/components/common/FileUpload';
 import { useRouter } from 'next/navigation';
-import { createAccount } from '@/hooks/commonService';
+import { AuthPost, createAccount, InviteAgent } from '@/hooks/commonService';
 import { useStateContext } from '@/providers/contextProvider';
 import { Button } from '@nextui-org/react';
 import SelectInput from '@/components/common/SelectInput';
@@ -15,6 +15,9 @@ import { Input } from '@nextui-org/input';
 import { SearchIcon } from '@/components/common/SearchIcon';
 import UserList from '@/components/common/UserList';
 import { users } from '@/components/data';
+import { jwtDecode } from 'jwt-decode';
+import toast from 'react-hot-toast';
+import Cookies from 'js-cookie';
 
 const AgentManagement = () => {
 	const { landlordData, setLandlordData } = useStateContext();
@@ -24,6 +27,7 @@ const AgentManagement = () => {
 	const [fullName, setFullName] = useState('');
 	const [email, setEmail] = useState('');
 	const [phoneNumber, setPhoneNumber] = useState('');
+	const [userId, setUserId] = useState('');
 	const [listedSearch, setListedSearch] = useState([]);
 	const [isActive, setIsActive] = useState(true);
 	const [message, setMessage] = useState({
@@ -31,6 +35,8 @@ const AgentManagement = () => {
 		title: '',
 		content: '',
 	});
+	const [loading, setLoading] = useState(false);
+
 	// console.log(option);
 	const checkHandler = (item) => {
 		// console.log(option);
@@ -42,20 +48,131 @@ const AgentManagement = () => {
 		// 	setIsOpen(false);
 		// }
 	};
+
+	const handleSetuser = (user) => {
+		console.log(user[0]);
+
+		setUserId(user[0]);
+	};
 	const router = useRouter();
 	const handleRoute = () => {
 		router.back();
 	};
 
 	// console.log(landlordData);
-	const handleSubmit = (e) => {
+	// const handleSubmit = (e) => {
+	// 	e.preventDefault();
+	// 	setLandlordData({
+	// 		...landlordData,
+	// 		tenantInteraction: option,
+	// 	});
+	// 	console.log(landlordData);
+	// 	// router.replace('/landlord/onboarding/');
+	// };
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		setLandlordData({
-			...landlordData,
-			tenantInteraction: option,
-		});
-		console.log(landlordData);
-		// router.replace('/landlord/onboarding/');
+		const accessToken = Cookies.get('accessToken');
+		const role = Cookies.get('role');
+		// const decoded = jwtDecode(auth_token);
+		setLoading(true);
+
+		try {
+			const storedDetails = JSON.parse(sessionStorage.getItem('details'));
+			if (storedDetails) {
+				storedDetails.have_an_agent = option;
+				if (userId) {
+					storedDetails.agent_id = userId;
+				}
+
+				if (option === 'yes') {
+					const { data: agentData } = await InviteAgent(
+						'/invite-staff',
+						{
+							full_name: fullName,
+							email: email,
+							phone_number: phoneNumber,
+						},
+						accessToken
+					);
+					if (agentData.body.success) {
+						toast.success(
+							agentData.body.message ||
+								'Invitation has been sent to your Agent'
+						);
+						console.log('agentData', agentData.body);
+
+						storedDetails.agent_id = agentData.body.data;
+						storedDetails.invite_agent = true;
+
+						// save landlord data
+						const { data } = await AuthPost(
+							'/update-user-data',
+							{
+								role: 'landlord',
+								details: storedDetails,
+							},
+							accessToken
+						);
+
+						console.log(data);
+						if (data.body.success) {
+							toast.success(
+								data?.body?.message ||
+									'Account updated successfully redirecting to your dashboard'
+							);
+							router.push(`/landlord`);
+							Cookies.remove('role');
+							sessionStorage.removeItem('details');
+						} else {
+							toast.error(
+								data?.errorMessage ||
+									data?.body?.message ||
+									'Something went wrong'
+							);
+						}
+					} else {
+						toast.error(
+							agentData?.errorMessage ||
+								agentData?.body?.message ||
+								'Something went wrong'
+						);
+					}
+				} else {
+					const { data } = await AuthPost(
+						'/update-user-data',
+						{
+							role: 'landlord',
+							details: storedDetails,
+						},
+						accessToken
+					);
+
+					console.log(data);
+					if (data.body.success) {
+						toast.success(
+							data?.body?.message ||
+								'Account updated successfully redirecting you to your dashboard'
+						);
+						router.push(`/landlord`);
+						Cookies.remove('role');
+						sessionStorage.removeItem('details');
+					} else {
+						toast.error(
+							data?.errorMessage ||
+								data?.body?.message ||
+								'Something went wrong'
+						);
+					}
+				}
+			}
+
+			// toast.success(data.body.message || 'Account created successfully');
+		} catch (error) {
+			console.log(error);
+			toast.error(error?.response?.data.message);
+		} finally {
+			setLoading(false);
+		}
 	};
 	const filteredUsers = users.filter(
 		(item) =>
@@ -96,6 +213,7 @@ const AgentManagement = () => {
 								selectedKeys={option}
 								// onSelectionChange={setOption}
 								onChange={checkHandler}
+								value={option}
 							>
 								{(agentOption) => (
 									<SelectItem>{agentOption.label}</SelectItem>
@@ -103,6 +221,10 @@ const AgentManagement = () => {
 							</Select>
 							{isOpen && (
 								<>
+									<p className='font-[400] text-[1rem] leadin my-[1.6rem] text-[#434242] text-center md:text-left '>
+										Select From the pool of our experienced
+										Agents
+									</p>
 									<Input
 										placeholder='Type to search for an Agent'
 										size='md'
@@ -114,13 +236,17 @@ const AgentManagement = () => {
 											setSearch(e.target.value)
 										}
 									/>
-									<UserList users={filteredUsers} />
+									<UserList
+										users={filteredUsers}
+										handleSetuser={handleSetuser}
+									/>
 								</>
 							)}
 							{option === 'yes' && isOpen && (
 								<div className='w-full'>
 									<p className='font-[600] text-[1rem] leadin my-[2.6rem]  text-[#202020] text-center md:text-left '>
-										Can’t find My agent here
+										Can’t find Your agent here? Invite them
+										to join us
 									</p>
 									<div className=''>
 										<Input
@@ -167,6 +293,7 @@ const AgentManagement = () => {
 							href={'#'}
 							className='flex items-center justify-center py-[0.625rem] px-[1.25rem] rounded-[0.375rem] bg-[#2C71F6] text-white hover:bg-secondaryBlue w-full md:w-[6.87rem]'
 							onClick={handleSubmit}
+							isLoading={loading}
 						>
 							Submit
 						</Button>

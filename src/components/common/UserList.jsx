@@ -1,4 +1,5 @@
-import React from 'react';
+'use client';
+import React, { useEffect } from 'react';
 import {
 	Listbox,
 	ListboxItem,
@@ -8,10 +9,14 @@ import {
 } from '@nextui-org/react';
 import { ListboxWrapper } from './ListboxWrapper';
 
-export default function UserList({ users }) {
+export default function UserList({ users, handleSetuser }) {
 	const [values, setValues] = React.useState(new Set(['']));
 
 	const arrayValues = Array.from(values);
+
+	useEffect(() => {
+		handleSetuser(arrayValues);
+	}, [arrayValues, handleSetuser]);
 
 	const topContent = React.useMemo(() => {
 		if (!arrayValues.length) {
@@ -51,6 +56,7 @@ export default function UserList({ users }) {
 				onSelectionChange={setValues}
 				variant='flat'
 				disallowEmptySelection={false}
+				hideEmptyContent={true}
 			>
 				{(item) => (
 					<ListboxItem
