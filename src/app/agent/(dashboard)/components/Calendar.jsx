@@ -15,6 +15,7 @@ export default function DashboardCalendar() {
 			onChange={setValue}
 			className='w-full justify-between items-center'
 			// weekdayStyle='long'
+			// monthStyle='long'
 		/>
 	);
 }
