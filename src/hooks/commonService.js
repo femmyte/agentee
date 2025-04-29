@@ -13,6 +13,10 @@ export function createAccount(url, data) {
 	return http.post(url, data, config, 'open');
 }
 
+export function OpenPost(url, data) {
+	return http.post(url, data, config, 'open');
+}
+
 export function AuthPost(url, data, accessToken) {
 	return http.post(
 		url,
@@ -27,6 +31,19 @@ export function AuthPost(url, data, accessToken) {
 }
 
 export function InviteAgent(url, data, accessToken) {
+	return http.post(
+		url,
+		data,
+		{
+			headers: {
+				Authorization: `${accessToken}`,
+			},
+		},
+		'open'
+	);
+}
+
+export function UpdatePassword(url, data, accessToken) {
 	return http.post(
 		url,
 		data,

@@ -29,44 +29,24 @@ export default function DefaultNavbar() {
 			isBordered
 			isMenuOpen={isMenuOpen}
 			onMenuOpenChange={setIsMenuOpen}
-			className='w-screen mx-0 justify-between'
 			shouldHideOnScroll
+			maxWidth='full'
+			className='bg-white shadow-sm px-8 '
 		>
-			<NavbarContent className='sm:hidden' justify='start'>
-				<NavbarMenuToggle
-					aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-				/>
-			</NavbarContent>
-
-			<NavbarContent className='sm:hidden pr-3' justify='center'>
-				<NavbarBrand>
-					<Image
-						src={'/images/logo.svg'}
-						width={98}
-						height={17}
-					></Image>
-				</NavbarBrand>
-			</NavbarContent>
 			{/* <NavbarContent className='hidden sm:flex '> */}
-			<NavbarContent
-				as={'div'}
-				className='hidden sm:flex'
-				justify='start'
-			>
+			<NavbarContent as={'div'} className='hidden sm:flex' justify=''>
 				<NavbarBrand>
-					<Image
-						src={'/images/logo.svg'}
-						width={98}
-						height={17}
-					></Image>
+					<Link color='foreground' href='/'>
+						<Image
+							src={'/images/logo.svg'}
+							width={98}
+							height={17}
+						></Image>
+					</Link>
 				</NavbarBrand>
 			</NavbarContent>
 
-			<NavbarContent
-				as='div'
-				className=' justify-end basis-2/3'
-				justify='end'
-			>
+			<NavbarContent as='div' className=' justify-end gap-x-8' justify>
 				<NavbarItem className='hidden lg:flex'>
 					<Link color='foreground' href='#'>
 						Post your house
@@ -78,10 +58,7 @@ export default function DefaultNavbar() {
 					</Link>
 				</NavbarItem>
 
-				<NavbarContent justify='end'>
-					{/* <NavbarItem className='hidden lg:flex'>
-						<Link href='#'>Login</Link>
-					</NavbarItem> */}
+				<NavbarContent justify='' className='hidden sm:flex'>
 					<NavbarItem>
 						<Button
 							as={Link}
@@ -144,32 +121,61 @@ export default function DefaultNavbar() {
 					</Dropdown>
 				</NavbarContent>
 				{/* mode switcher */}
-				<NavbarContent justify='end'>
+				{/* <NavbarContent justify='end'>
 					<SwitchMode />
-				</NavbarContent>
+				</NavbarContent> */}
 			</NavbarContent>
 			{/* </NavbarContent> */}
+			{/* menu for mobile */}
 
-			<NavbarMenu>
-				{menuItems.map((item, index) => (
-					<NavbarMenuItem key={`${item}-${index}`}>
-						<Link
-							className='w-full'
-							color={
-								index === 2
-									? 'warning'
-									: index === menuItems.length - 1
-									? 'danger'
-									: 'foreground'
-							}
-							href='#'
-							size='lg'
+			{/* logo for mobile */}
+			<NavbarContent className='sm:hidden pr- justify-start ' justify=''>
+				<NavbarBrand>
+					<Link color='foreground' href='/'>
+						<Image
+							src={'/images/logo.svg'}
+							width={98}
+							height={17}
+						></Image>
+					</Link>
+				</NavbarBrand>
+				<NavbarMenu className='w-screen h-screen flex flex-col justify-center items-center'>
+					{menuItems.map((item, index) => (
+						<NavbarMenuItem key={`${item}-${index}`}>
+							<Link
+								className='w-full'
+								color={
+									index === 2
+										? 'warning'
+										: index === menuItems.length - 1
+										? 'danger'
+										: 'foreground'
+								}
+								href='#'
+								size='lg'
+							>
+								{item}
+							</Link>
+						</NavbarMenuItem>
+					))}
+					<NavbarItem>
+						<Button
+							as={Link}
+							color='warning'
+							href='/signin'
+							className='bg-primary text-white w-[80vw]'
 						>
-							{item}
-						</Link>
-					</NavbarMenuItem>
-				))}
-			</NavbarMenu>
+							Sign In
+						</Button>
+					</NavbarItem>
+				</NavbarMenu>
+			</NavbarContent>
+			{/* hamburger for mobile */}
+			<NavbarContent className='sm:hidden' justify='end'>
+				<NavbarMenuToggle
+					aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+				/>
+			</NavbarContent>
 		</Navbar>
 	);
 }
