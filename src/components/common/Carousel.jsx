@@ -1,7 +1,9 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import FeaturedProperties from './cards/FeaturedProperties';
 import { useState, useEffect } from 'react';
 const Carousel = ({ items, currentIndex }) => {
+	const router = useRouter();
 	const [size, setSize] = useState(100);
 	useEffect(() => {
 		const handleResize = () => {
@@ -24,6 +26,12 @@ const Carousel = ({ items, currentIndex }) => {
 		};
 	});
 	console.log(size);
+
+	const handleClick = (index) => {
+		// Handle click event on carousel items
+		console.log('Clicked item index:', index);
+		router.push(`/properties/${index}`);
+	};
 	return (
 		<div className='relative w-full overflow-hidden'>
 			{/* Carousel items */}
@@ -34,7 +42,8 @@ const Carousel = ({ items, currentIndex }) => {
 				{items.map((item, index) => (
 					<div
 						key={index}
-						className='w-full md:w-1/3 flex-shrink-0 p-4'
+						className='w-full md:w-1/3 flex-shrink-0 p-4 cursor-pointer'
+						onClick={() => handleClick(item.id)}
 					>
 						<FeaturedProperties item={item} />
 					</div>
