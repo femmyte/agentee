@@ -44,6 +44,7 @@ const Carousel = ({ items, currentIndex }) => {
 						key={index}
 						className='w-full md:w-1/3 flex-shrink-0 p-4 cursor-pointer'
 						onClick={() => handleClick(item.id)}
+						title={`View ${item.title}`}
 					>
 						<FeaturedProperties item={item} />
 					</div>

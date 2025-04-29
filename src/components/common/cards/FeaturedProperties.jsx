@@ -51,11 +51,10 @@ const FeaturedProperties = ({ item }) => {
 			}}
 		>
 			<div className='w-full relative'>
-				<Image
-					fill
-					isZoomed
+				<img
 					alt='NextUI Fruit Image with Zoom'
 					src='/images/property.png'
+					className='co bg-contain w-full'
 				/>
 			</div>
 			<div className='mt-[8px] grid grid-cols-5 gap-2'>

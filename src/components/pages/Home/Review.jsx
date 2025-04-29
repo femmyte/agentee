@@ -2,6 +2,7 @@ import React from 'react';
 import ReviewCard from '@/components/common/cards/Review';
 import { Button } from '@nextui-org/react';
 import Image from 'next/image';
+import Link from 'next/link';
 const Review = () => {
 	return (
 		<section className='pt-[3.5rem] px-3 md:px-[5.97rem]'>
@@ -32,9 +33,12 @@ const Review = () => {
 					<p className='text-[1rem] font-[500] leading-[140%] text-[#89898A] mb-[1rem] text-center md:text-left'>
 						Register and get your home listed as a property owner
 					</p>
-					<Button className='bg-[#2C71F6] text-white px-[0.875rem] py-[1.5rem] text-[1rem] font-[600] leading-4'>
+					<Link
+						href={'/signup'}
+						className='bg-[#2C71F6] text-white px-[0.875rem] py-[1.5rem] text-[1rem] font-[600] leading-4 rounded-md'
+					>
 						Get Started
-					</Button>
+					</Link>
 				</div>
 			</div>
 		</section>
