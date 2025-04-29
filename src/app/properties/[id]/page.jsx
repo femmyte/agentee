@@ -66,8 +66,8 @@ const Property = ({ params }) => {
 				<div className='my-[4.94rem] px-4 md:px-[6.5rem]'>
 					<div className='flex gap-x-3 mb-[0.62rem]'>
 						<div className=''>
-							<h1 className='dark:text-white text-[#202020] text-3xl mb-2 font-[500] leading-3 text-primary'>
-								{property?.name}at {property?.city}
+							<h1 className='dark:text-white text-3xl mb-2 font-[500] leading-10 text-primary'>
+								{property?.name} at {property?.city}
 							</h1>
 							<p className='text-[1rem] font-[400] leading-6'>
 								{property?.address}

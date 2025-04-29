@@ -4,7 +4,7 @@ import { OpenPost } from '@/hooks/commonService';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
 
 const ResetPassword = () => {
 	const [loading, setLoading] = useState(false);

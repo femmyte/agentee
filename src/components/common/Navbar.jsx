@@ -48,7 +48,7 @@ export default function DefaultNavbar() {
 
 			<NavbarContent as='div' className=' justify-end gap-x-8' justify>
 				<NavbarItem className='hidden lg:flex'>
-					<Link color='foreground' href='#'>
+					<Link color='foreground' href='/agent/add-property'>
 						Post your house
 					</Link>
 				</NavbarItem>
