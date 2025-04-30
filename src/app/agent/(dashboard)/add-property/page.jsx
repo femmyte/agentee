@@ -129,10 +129,10 @@ const AddProperty = () => {
 
 	return (
 		<DashboardLayout>
-			<div className='pt-6 px-[2.2rem] bg-[#F1F9F4] min-h-screen'>
+			<div className='pt-6 px-5 md:px-[2.2rem] bg-[#F1F9F4] min-h-screen'>
 				<div className='bg-white p-8'>
-					<section className='flex justify-between'>
-						<div className='w-[28.5rem]'>
+					<section className='flex flex-col md:flex-row gap-y-6 justify-between'>
+						<div className='w-full md:w-[28.5rem]'>
 							<h1 className='dark:text-white text-[3rem] mb-2 font-[500] leading-[4.2rem] text-primary'>
 								Upload that perfect House for your Clients
 							</h1>
@@ -151,7 +151,7 @@ const AddProperty = () => {
 
 					<form
 						onSubmit={handleSubmit(onSubmit)}
-						className='w-full mx-auto p-6 mt-8'
+						className='w-full mx-auto p-3 md:p-6 mt-8'
 					>
 						{/* <label
 							className='text-[1rem] font-[500] leading-[2.25rem]'
@@ -287,7 +287,7 @@ const AddProperty = () => {
 								<h4 className='font-semibold mb-2'>
 									The house features
 								</h4>
-								<div className='grid grid-cols-2 md:grid-cols-3 gap-4'>
+								<div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
 									{features.map((feat) => (
 										<Checkbox
 											key={feat}
@@ -363,14 +363,15 @@ const AddProperty = () => {
 									)}
 								</div>
 							</div>
-
-							<Button
-								type='submit'
-								color='primary'
-								className='mt-4'
-							>
-								Submit
-							</Button>
+							<div className='flex items-center justify-center'>
+								<Button
+									type='submit'
+									color='primary'
+									className='mt-4 px-8 py-4'
+								>
+									Submit
+								</Button>
+							</div>
 						</div>
 					</form>
 				</div>
