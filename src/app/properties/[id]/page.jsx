@@ -1,7 +1,7 @@
 'use client';
 import DefaultNavbar from '@/components/common/Navbar';
 import { Image } from '@nextui-org/react';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Calendar, Clock, Info, LocateIcon } from 'lucide-react';
 
@@ -28,6 +28,14 @@ const Property = ({ params }) => {
 	const [modalPlacement, setModalPlacement] = useState('auto');
 
 	const [message, setMessage] = useState('');
+
+	useEffect(() => {
+		fetchData();
+	}, []);
+
+	const fetchData = async () => {
+		const data = openGetItem('/get-property');
+	};
 
 	const onSubmit = () => {
 		// Here you can send the review and rating to your backend or API
@@ -59,6 +67,7 @@ const Property = ({ params }) => {
 		'/images/appartment/five.png',
 		'/images/appartment/six.png',
 	];
+
 	return (
 		<>
 			<DefaultNavbar />

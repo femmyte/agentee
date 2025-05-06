@@ -19,6 +19,9 @@ const CountryStateCitySelect = ({ control, errors }) => {
 	const [selectedCountry, setSelectedCountry] = useState('');
 	const [selectedState, setSelectedState] = useState('');
 
+	const [selectedCountryCode, setSelectedCountryCode] = useState('');
+	const [selectedStateCode, setSelectedStateCode] = useState('');
+
 	useEffect(() => {
 		setCountries(Country.getAllCountries());
 	}, []);
@@ -37,6 +40,15 @@ const CountryStateCitySelect = ({ control, errors }) => {
 		}
 	}, [selectedState, selectedCountry]);
 
+	useEffect(() => {
+		// Optional: update selectedCountryCode if form value is restored (e.g., edit form)
+		if (control?._formValues?.country) {
+			const matched = countries.find(
+				(c) => c.name === control._formValues.country
+			);
+			if (matched) setSelectedCountryCode(matched.isoCode);
+		}
+	}, [control, countries]);
 	// Filter countries based on user input
 	const filteredCountries = countries.filter((country) =>
 		country.name.toLowerCase().includes(inputValue.toLowerCase())
@@ -57,9 +69,13 @@ const CountryStateCitySelect = ({ control, errors }) => {
 							isSearchable
 							selectedKeys={field.value ? [field.value] : []}
 							onSelectionChange={(keys) => {
-								const selected = Array.from(keys)[0];
-								field.onChange(selected);
-								setSelectedCountry(selected);
+								const selectedCode = Array.from(keys)[0];
+								const selectedObj = countries.find(
+									(c) => c.isoCode === selectedCode
+								);
+								const selectedName = selectedObj?.name || '';
+								field.onChange(selectedName); // submit country name
+								setSelectedCountry(selectedCode); // for loading states
 							}}
 						>
 							{countries.map((c) => (
@@ -83,6 +99,7 @@ const CountryStateCitySelect = ({ control, errors }) => {
 					</>
 				)}
 			/>
+
 			{/* <Controller
 				name='country'
 				control={control}
@@ -127,9 +144,8 @@ const CountryStateCitySelect = ({ control, errors }) => {
 					</>
 				)}
 			/> */}
-
 			{/* State */}
-			<Controller
+			{/* <Controller
 				name='state'
 				control={control}
 				rules={{ required: true }}
@@ -142,9 +158,53 @@ const CountryStateCitySelect = ({ control, errors }) => {
 							isDisabled={!selectedCountry}
 							selectedKeys={field.value ? [field.value] : []}
 							onSelectionChange={(keys) => {
-								const selected = Array.from(keys)[0];
-								field.onChange(selected);
-								setSelectedState(selected);
+								const selectedCode = Array.from(keys)[0];
+								const selectedObj = states.find(
+									(s) => s.isoCode === selectedCode
+								);
+								const selectedName = selectedObj?.name || '';
+								field.onChange(selectedName); // submit state name
+								setSelectedState(selectedCode); // for loading cities
+							}}
+						>
+							{states.map((s) => (
+								<SelectItem key={s.isoCode} value={s.isoCode}>
+									{s.name}
+								</SelectItem>
+							))}
+						</Select>
+						{errors.state && (
+							<p className='text-red-500 text-sm mt-1'>
+								State is required
+							</p>
+						)}
+					</>
+				)}
+			/> */}
+			<Controller
+				name='state'
+				control={control}
+				rules={{ required: true }}
+				render={({ field }) => (
+					<>
+						<Select
+							label='Select State'
+							className='w-full'
+							isSearchable
+							isDisabled={!selectedCountry}
+							selectedKeys={
+								selectedStateCode ? [selectedStateCode] : []
+							}
+							onSelectionChange={(keys) => {
+								const code = Array.from(keys)[0];
+								const state = states.find(
+									(s) => s.isoCode === code
+								);
+								const name = state?.name || '';
+
+								field.onChange(name);
+								setSelectedStateCode(code);
+								setSelectedState(code);
 							}}
 						>
 							{states.map((s) => (
@@ -161,7 +221,6 @@ const CountryStateCitySelect = ({ control, errors }) => {
 					</>
 				)}
 			/>
-
 			{/* City */}
 			{/* <Controller
 				name='city'

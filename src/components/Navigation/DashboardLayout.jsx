@@ -7,7 +7,17 @@ import { useStateContext } from '@/providers/contextProvider';
 // import { signOut } from 'next-auth/react';
 import { FaWindowClose } from 'react-icons/fa';
 // import CirclesBarLoader from '../CircleBarLoader';
+import {
+	Modal,
+	ModalContent,
+	ModalHeader,
+	ModalBody,
+	ModalFooter,
+	Button,
+	useDisclosure,
+} from '@heroui/react';
 import { useState } from 'react';
+import Cookies from 'js-cookie';
 
 function DashboardLayout({ children }) {
 	const {
@@ -18,16 +28,41 @@ function DashboardLayout({ children }) {
 		setOpenLogoutModal,
 	} = useStateContext();
 
+	const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
 	const router = useRouter();
 
 	const [isSignOut, setSignOut] = useState(false);
 
 	const handleLogout = async () => {
-		setSignOut(true);
-		localStorage.removeItem('hasSeenModal', 'true');
-		const data = await signOut({ redirect: false, callbackUrl: '/' });
-		router.push(data.url);
+		try {
+			// Send request to server to clear HttpOnly cookies
+			await fetch('/api/logout', {
+				method: 'POST',
+			});
+			onOpen;
+			onOpenChange(false);
+			// Optionally clear any localStorage or non-HttpOnly client cookies
+			Cookies.remove('user');
+			Cookies.remove('role');
+
+			router.push('/');
+		} catch (err) {
+			console.error('Logout failed:', err);
+		}
 	};
+
+	// const handleLogout = async () => {
+	// 	// setSignOut(true);
+	// 	onOpen;
+	// 	onOpenChange(false);
+	// 	Cookies.remove('accessToken');
+	// 	Cookies.remove('refreshToken');
+	// 	Cookies.remove('authToken');
+	// 	Cookies.remove('user');
+	// 	Cookies.remove('role');
+	// 	router.push('/');
+	// };
 	// const { activeMenu, darkToggle, login } = false;
 
 	// const location = useLocation();
@@ -65,57 +100,88 @@ function DashboardLayout({ children }) {
 							<div className='dark:text-gray-200 dark:bg-main-dark-bg dark:hover:text-white pt-[50px] md:pt-0 '>
 								<div className=' pb-[30px] dark:text-gray-200 dark:bg-main-dark-bg dark:hover:text-white md:pl-[3rem] z-20 '>
 									{children}
-									{/* <CenteredModal
-										modalIsOpen={openLogoutModal}
-										setIsOpen={setOpenLogoutModal}
-									>
-										<div className='px-[20px]'>
-											<div className='flex justify-between items-center'>
-												<p className='font-[600] text-[1.25rem] leading-[2.375rem] text-[#2E3646]'>
-													Log out
-												</p>
-												<FaWindowClose
-													className='cursor-pointer'
-													onClick={() =>
-														setOpenLogoutModal(
-															(preveState) =>
-																!preveState
-														)
-													}
-												/>
-											</div>
-											<p className='my-[1.5rem] font-[400] text-[0.875rem] leading-[1.5rem] text-[#5F6D7E] text-center'>
-												This action will log you out of
-												this website.
-											</p>
-											<div className='flex gap-x-[0.75rem]'>
-												<button
-													type='submit'
-													className=' py-[8px] px-[16px] rounded-lg bg-[#DB2438]  font-dmsans font-[500] text-[18px] text-white'
-													onClick={() => {
-														handleLogout();
-														setOpenLogoutModal(
-															false
-														);
-													}}
-												>
-													Yes, Log out
-												</button>
-												<button
-													type='submit'
-													className=' py-[8px] px-[16px] rounded-lg border border-[#D1D5DB] font-[500] text-[18px] text-black '
-													onClick={() =>
-														setOpenLogoutModal(
-															(preveState) =>
-																!preveState
-														)
-													}
-												>
-													No, continue
-												</button>
-											</div>
-										</div>
-									</CenteredModal> */}
+									<div className='flex px-10 justify-center items-center flex-col gap-4'>
+										<Modal
+											isOpen={openLogoutModal}
+											placement={'center'}
+											onOpenChange={onOpenChange}
+										>
+											<ModalContent>
+												{(onClose) => (
+													<>
+														<ModalHeader className='flex flex-col gap-1'>
+															<div className='flex justify-between items-center'>
+																<p className='font-[600] text-[1.25rem] leading-[2.375rem] text-[#2E3646]'>
+																	Log out
+																</p>
+																<FaWindowClose
+																	className='cursor-pointer'
+																	onClick={() =>
+																		setOpenLogoutModal(
+																			(
+																				preveState
+																			) =>
+																				!preveState
+																		)
+																	}
+																/>
+															</div>
+														</ModalHeader>
+														<ModalBody>
+															<div className='px-[20px]'>
+																<p className='my-[1.5rem] font-[400] text-[0.875rem] leading-[1.5rem] text-[#5F6D7E] text-center'>
+																	This action
+																	will log you
+																	out of this
+																	website.
+																</p>
+																<div className='flex gap-x-[0.75rem]'>
+																	<button
+																		type='submit'
+																		className=' py-[8px] px-[16px] rounded-lg bg-[#DB2438]  font-dmsans font-[500] text-[18px] text-white'
+																		onClick={() => {
+																			handleLogout();
+																			setOpenLogoutModal(
+																				false
+																			);
+																		}}
+																	>
+																		Yes, Log
+																		out
+																	</button>
+																	<button
+																		type='submit'
+																		className=' py-[8px] px-[16px] rounded-lg border border-[#D1D5DB] font-[500] text-[18px] text-black '
+																		onClick={() =>
+																			setOpenLogoutModal(
+																				(
+																					preveState
+																				) =>
+																					!preveState
+																			)
+																		}
+																	>
+																		No,
+																		continue
+																	</button>
+																</div>
+															</div>
+														</ModalBody>
+														<ModalFooter>
+															{/* <Button
+																color='primary'
+																onPress={
+																	onSubmit
+																}
+															>
+																Submit
+															</Button> */}
+														</ModalFooter>
+													</>
+												)}
+											</ModalContent>
+										</Modal>
+									</div>
 								</div>
 							</div>
 						</div>

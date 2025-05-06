@@ -1,9 +1,9 @@
 import { Inter, Roboto } from 'next/font/google';
 import './globals.css';
-import NextAuthProvider from '@/providers/NextAuthProvider';
-import ReactQuery from '@/providers/ReactQueryProvider';
-import { ContextProvider } from '@/providers/contextProvider';
-import NextUIProvider from '@/providers/NextUIProvider';
+import NextAuthProvider from '../providers/NextAuthProvider';
+import ReactQuery from '../providers/ReactQueryProvider';
+import { ContextProvider } from '../providers/contextProvider';
+import NextUIProvider from '../providers/NextUIProvider';
 import { Toaster } from 'react-hot-toast';
 // const inter = Inter({ subsets: ['latin'] });
 const roboto = Roboto({

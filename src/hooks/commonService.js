@@ -1,5 +1,7 @@
 import http from './htttpService';
 
+import axios from 'axios';
+
 const config = {
 	headers: {
 		'Content-Type': 'application/json',
@@ -56,7 +58,7 @@ export function UpdatePassword(url, data, accessToken) {
 	);
 }
 
-export function getUserInfo(id, accessToken) {
+export function getUserInfo(apiPath, id, accessToken) {
 	return http.get(
 		`/${apiPath}/${id}`,
 		{
@@ -68,7 +70,7 @@ export function getUserInfo(id, accessToken) {
 	);
 }
 
-export function fetchList(accessToken) {
+export function coreList(apiPath, accessToken) {
 	return http.get(
 		`/${apiPath}`,
 		{
@@ -80,7 +82,7 @@ export function fetchList(accessToken) {
 	);
 }
 
-export function getItem(id, accessToken) {
+export function coreGetItem(id, accessToken) {
 	return http.get(
 		`/${apiPath}/${id}`,
 		{
@@ -90,4 +92,12 @@ export function getItem(id, accessToken) {
 		},
 		'core'
 	);
+}
+
+export function openList(apiPath) {
+	return http.get(`/${apiPath}`, 'open');
+}
+
+export function openGetItem(apiPath, id) {
+	return http.get(`/${apiPath}/${id}`, 'open');
 }

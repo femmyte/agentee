@@ -1,6 +1,6 @@
-import DefaultNavbar from '@/components/common/Navbar';
+import DefaultNavbar from '../components/common/Navbar';
 import React from 'react';
-import Home from '@/components/pages/Home';
+import Home from '../components/pages/Home';
 const HomePage = () => {
 	return (
 		<div className='w-screen'>

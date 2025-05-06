@@ -7,7 +7,7 @@ const AddProperty = () => {
 
 	return (
 		<div className=''>
-			<PostHouse role={'agent'} />
+			<PostHouse role={'landlord'} />
 		</div>
 	);
 };

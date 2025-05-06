@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { BiSupport } from 'react-icons/bi';
+import Cookies from 'js-cookie';
 const Sidebar = () => {
 	let {
 		activeMenu,
@@ -30,7 +31,7 @@ const Sidebar = () => {
 		}
 	};
 	let userInfo = {
-		role: 'agent',
+		role: Cookies.get('role'),
 	};
 	// let userInfo = session?.data?.user;
 	let links;

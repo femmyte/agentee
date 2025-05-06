@@ -1,6 +1,7 @@
 'use client';
 import Nav from '@/components/common/Nav';
 import { UpdatePassword } from '@/hooks/commonService';
+import { proxyPost } from '@/services/proxyClient';
 import { Button } from '@nextui-org/react';
 import Cookies from 'js-cookie';
 import Image from 'next/image';
@@ -22,21 +23,33 @@ const ChangePassword = () => {
 		setIsActive(allFieldsFilled);
 	}, [oldPassword, newPassword]);
 
+	const createItem = async (data) => {
+		const response = await proxyPost('/change-password', {
+			data,
+		});
+		console.log(response);
+		return response;
+	};
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const accessToken = Cookies.get('accessToken');
-		const role = Cookies.get('role');
+		// const accessToken = Cookies.get('accessToken');
+		// const role = Cookies.get('role');
 		setLoading(true);
 
 		try {
-			const { data } = await UpdatePassword(
-				'/change-password',
-				{
-					new_password: newPassword,
-					old_password: oldPassword,
-				},
-				accessToken
-			);
+			data = createItem({
+				new_password: newPassword,
+				old_password: oldPassword,
+			});
+			// const { data } = await UpdatePassword(
+			// 	'/change-password',
+			// 	{
+			// 		new_password: newPassword,
+			// 		old_password: oldPassword,
+			// 	},
+			// 	accessToken
+			// );
 
 			console.log(data);
 			if (data.body.success) {

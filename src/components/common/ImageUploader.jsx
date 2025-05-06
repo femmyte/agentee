@@ -124,14 +124,15 @@ export default function HouseImageUploader({
 							className='mt-2'
 							color='primary'
 							variant='bordered'
+							onClick={handleImageChange}
 						>
 							+ Upload a file
 						</Button>
+						<p className='mt-2 text-sm text-gray-500'>
+							You must upload the room(s) and the Compound (Max
+							10MB/image)
+						</p>
 					</label>
-					<p className='mt-2 text-sm text-gray-500'>
-						You must upload the room(s) and the Compound (Max
-						10MB/image)
-					</p>
 				</div>
 			</div>
 			{uploadedFiles.length > 0 && (

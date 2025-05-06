@@ -35,96 +35,130 @@ const Registration = () => {
 			});
 			console.log('Login response:', response.data);
 
-			if (response.data.body && response.data.body.success) {
-				// Extracting tokens from response
-				const responseData = response.data;
-				let access_token, refresh_token, auth_token;
+			// if (response.data.body && response.data.body.success) {
+			// 	// Extracting tokens from response
+			// 	// const responseData = response.data;
+			// 	// let access_token, refresh_token, auth_token;
 
-				// Check different possible paths where tokens might be located
-				if (responseData.body?.data?.access_token) {
-					access_token = responseData.body.data.access_token;
-					refresh_token = responseData.body.data.refresh_token;
-					auth_token = responseData.body.data.id_token;
-				} else if (responseData.data?.access_token) {
-					access_token = responseData.data.access_token;
-					refresh_token = responseData.data.refresh_token;
-					auth_token = responseData.data.id_token;
-				}
+			// 	// // Check different possible paths where tokens might be located
+			// 	// if (responseData.body?.data?.access_token) {
+			// 	// 	access_token = responseData.body.data.access_token;
+			// 	// 	refresh_token = responseData.body.data.refresh_token;
+			// 	// 	auth_token = responseData.body.data.id_token;
+			// 	// } else if (responseData.data?.access_token) {
+			// 	// 	access_token = responseData.data.access_token;
+			// 	// 	refresh_token = responseData.data.refresh_token;
+			// 	// 	auth_token = responseData.data.id_token;
+			// 	// }
 
-				if (!access_token || !refresh_token) {
-					throw new Error('Auth tokens not found in the response');
-				}
+			// 	// if (!access_token || !refresh_token) {
+			// 	// 	throw new Error('Auth tokens not found in the response');
+			// 	// }
 
-				// const decoded = decodeToken(auth_token);
-				// console.log('Decoded JWT:', decoded);
-				const decoded = jwtDecode(auth_token);
-				// console.log('Decoded JWT:', decoded);
+			// 	// const decoded = decodeToken(auth_token);
+			// 	// console.log('Decoded JWT:', decoded);
+			// 	// console.log('Decoded JWT:', decoded);
 
-				// Set cookies first before navigation
-				Cookies.set('accessToken', access_token, {
-					// expires: new Date(new Date().getTime() + 15 * 60 * 1000), // 15 minutes
-					expires: 1,
-					path: '/',
-					secure: process.env.NODE_ENV === 'production',
-					sameSite: 'Strict',
-				});
+			// 	// Set cookies first before navigation
+			// 	// Cookies.set('accessToken', access_token, {
+			// 	// 	// expires: new Date(new Date().getTime() + 15 * 60 * 1000), // 15 minutes
+			// 	// 	expires: 1,
+			// 	// 	path: '/',
+			// 	// 	secure: process.env.NODE_ENV === 'production',
+			// 	// 	sameSite: 'Strict',
+			// 	// });
 
-				Cookies.set('refreshToken', refresh_token, {
-					expires: 1, // 1 day
-					path: '/',
-					secure: process.env.NODE_ENV === 'production',
-					sameSite: 'Strict',
-				});
+			// 	// Cookies.set('refreshToken', refresh_token, {
+			// 	// 	expires: 1, // 1 day
+			// 	// 	path: '/',
+			// 	// 	secure: process.env.NODE_ENV === 'production',
+			// 	// 	sameSite: 'Strict',
+			// 	// });
 
-				Cookies.set('authToken', auth_token, {
-					expires: 1, // 1 day
-					path: '/',
-					secure: process.env.NODE_ENV === 'production',
-					sameSite: 'Strict',
-				});
-				Cookies.set('user', JSON.stringify(decoded), {
-					expires: 1, // 1 day
-					path: '/',
-					secure: process.env.NODE_ENV === 'production',
-					sameSite: 'Strict',
-				});
-				toast.success('Verification successful!');
+			// 	// Cookies.set('authToken', auth_token, {
+			// 	// 	expires: 1, // 1 day
+			// 	// 	path: '/',
+			// 	// 	secure: process.env.NODE_ENV === 'production',
+			// 	// 	sameSite: 'Strict',
+			// 	// });
+			// 	Cookies.set('user', JSON.stringify(decoded), {
+			// 		expires: 1, // 1 day
+			// 		path: '/',
+			// 		secure: process.env.NODE_ENV === 'production',
+			// 		sameSite: 'Strict',
+			// 	});
+			// 	toast.success('Verification successful!');
 
-				// Add immediate visual feedback
-				document.body.style.cursor = 'wait';
+			// 	// Add immediate visual feedback
+			// 	document.body.style.cursor = 'wait';
 
-				setTimeout(() => {
-					// Double checking the cookie is set before redirecting
-					if (Cookies.get('authToken')) {
-						toast.success(
-							'Welcome back! Redirecting to dashboard...'
-						);
+			// 	const decoded = jwtDecode(auth_token);
+			// 	setTimeout(() => {
+			// 		// Double checking the cookie is set before redirecting
+			// 		if (Cookies.get('authToken')) {
+			// 			toast.success(
+			// 				'Welcome back! Redirecting to dashboard...'
+			// 			);
 
-						console.log(decoded?.['custom:completed_setup']);
+			// 			console.log(decoded?.['custom:completed_setup']);
+			// 			Cookies.set('role', decoded?.['custom:user-type'], {
+			// 				expires: 1, // 1 day
+			// 				path: '/',
+			// 				secure: process.env.NODE_ENV === 'production',
+			// 				sameSite: 'Strict',
+			// 			});
 
-						if (decoded?.['custom:completed_setup'] === 'false') {
-							router.push('/welcome');
-						} else {
-							if (decoded?.['custom:user-type'] === 'agent') {
-								router.push('/agent/');
-							} else if (
-								decoded?.['custom:user-type'] === 'landlord'
-							) {
-								router.push('/landlord/');
-							} else {
-								router.push('/tenant/');
-							}
-						}
+			// 			if (decoded?.['custom:completed_setup'] === 'false') {
+			// 				router.push('/welcome');
+			// 			} else {
+			// 				if (decoded?.['custom:user-type'] === 'agent') {
+			// 					router.push('/agent/');
+			// 				} else if (
+			// 					decoded?.['custom:user-type'] === 'landlord'
+			// 				) {
+			// 					router.push('/landlord/');
+			// 				} else {
+			// 					router.push('/tenant/');
+			// 				}
+			// 			}
+			// 		} else {
+			// 			toast.error('Authentication failed. Please try again.');
+			// 			setError('Token not saved properly. Please try again.');
+			// 		}
+			// 	}, 1000);
+			// } else {
+			// 	setError(response.data.body?.message || 'Verification failed');
+			// 	toast.error(
+			// 		response.data.body?.message || 'Verification failed'
+			// 	);
+			// }
+
+			if (response.data.success) {
+				const decoded = jwtDecode(response.data.decoded);
+
+				toast.success('Login successful');
+
+				// Optional: Store non-sensitive data in local state if needed
+				// Redirect
+				if (decoded?.['custom:completed_setup'] === 'false') {
+					router.push('/welcome');
+				} else {
+					if (decoded?.['custom:user-type'] === 'agent') {
+						router.push('/agent/');
+					} else if (decoded?.['custom:user-type'] === 'landlord') {
+						router.push('/landlord/');
 					} else {
-						toast.error('Authentication failed. Please try again.');
-						setError('Token not saved properly. Please try again.');
+						router.push('/tenant/');
 					}
-				}, 1000);
+				}
+				Cookies.set('role', decoded?.['custom:user-type'], {
+					expires: 1, // 1 day
+					path: '/',
+					secure: process.env.NODE_ENV === 'production',
+					sameSite: 'Strict',
+				});
 			} else {
-				setError(response.data.body?.message || 'Verification failed');
-				toast.error(
-					response.data.body?.message || 'Verification failed'
-				);
+				toast.error('Login failed');
 			}
 		} catch (err) {
 			console.log('Login error:', err);

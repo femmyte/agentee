@@ -24,6 +24,7 @@ import {
 	Input,
 } from '@nextui-org/react';
 import { SearchIcon } from '../common/SearchIcon';
+import Cookies from 'js-cookie';
 
 const NavButton = ({ title, customFunc, icon, color, dotColor, num }) => (
 	<div className='relative'>
@@ -103,17 +104,9 @@ const Navbar = () => {
 	// 		: currentUser.role === 'ac'
 	// 		? 'ABEOKUTA AREA COMMAND CRIME STATISTICS'
 	// 		: 'Nigeria Police Force';
-	const currentUser = {
-		role: 'agent',
-	};
-	const subTitle =
-		currentUser.role === 'dpo'
-			? `${currentUser.policeDivision.name} Police Station`
-			: currentUser.role === 'ac'
-			? currentUser?.areaCommand.name
-			: currentUser.role === 'cp'
-			? "CP's Crime Monitoring Portal"
-			: currentUser.role === 'admin' && 'Police Crime Input System';
+
+	const role = Cookies.get('role');
+
 	return (
 		<div className='flex justify-between  pt-[0.9rem] items-center py-4 px-8'>
 			{/* <Image src={'/images/logo.png'} width={54} height={90} alt='logo' /> */}
@@ -146,7 +139,7 @@ const Navbar = () => {
 				<Button
 					as={Link}
 					color='warning'
-					href='/signin'
+					href={`/${role}/add-property`}
 					className='bg-primary text-white'
 				>
 					Post a House
