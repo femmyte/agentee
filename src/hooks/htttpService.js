@@ -31,11 +31,6 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-const BASE_URLS = {
-	open: process.env.NEXT_PUBLIC_OPEN_API_URL,
-	core: process.env.NEXT_PUBLIC_CORE_API_URL,
-};
-
 axios.interceptors.response.use(null, (error) => {
 	const expectedError =
 		error.response &&
@@ -50,7 +45,13 @@ axios.interceptors.response.use(null, (error) => {
 });
 
 function request(method, url, data = {}, config = {}, type = 'open') {
+	const BASE_URLS = {
+		open: process.env.NEXT_PUBLIC_OPEN_API_URL,
+		core: process.env.NEXT_PUBLIC_CORE_API_URL,
+	};
 	const baseURL = BASE_URLS[type] || '';
+	console.log(baseURL);
+
 	return axios({
 		method,
 		url,
@@ -61,7 +62,7 @@ function request(method, url, data = {}, config = {}, type = 'open') {
 }
 
 const httpService = {
-	get: (url, config, type = 'open') => request('get', url, {}, config, type),
+	get: (url, config, type = 'core') => request('get', url, {}, config, type),
 	post: (url, data, config, type = 'open') =>
 		request('post', url, data, config, type),
 	put: (url, data, config, type = 'core') =>

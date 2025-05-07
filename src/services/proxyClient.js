@@ -18,6 +18,9 @@ export const proxyRequest = ({
 export const proxyGet = (endpoint, type = 'core') =>
 	proxyRequest({ endpoint, method: 'GET', type });
 
+export const proxyOpenGet = (endpoint, type = 'core') =>
+	proxyRequest({ endpoint, method: 'GET', type });
+
 export const proxyPost = (endpoint, data, type = 'core') =>
 	proxyRequest({ endpoint, method: 'POST', data, type });
 

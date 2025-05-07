@@ -27,21 +27,36 @@ export default function ImageGallery({ images }) {
 		<>
 			{/* Grid of images */}
 			{/* <div className=''> */}
-			{images.map((src, index) => (
+			{/* {images?.map((image, index) => (
 				<img
 					key={index}
-					src={src}
+					src={image.url}
 					// width={300}
 					// height={300}
 					// fill={true}
 					// layout='fill'
 					// objectFit='cover'
 					// sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-					alt={`Image ${index}`}
+					alt={`Image ${image.doc_name}`}
 					className='object-cover rounded-lg w-full cursor-zoom-in'
 					onClick={() => openModal(index)}
 					title='Click to view full image'
 				/>
+			))} */}
+			{images?.map((image, index) => (
+				<div
+					key={index}
+					className='relative w-full aspect-[4/3] rounded-lg overflow-hidden cursor-zoom-in'
+					onClick={() => openModal(index)}
+				>
+					<Image
+						src={image.url}
+						alt={`Image ${image.doc_name}`}
+						fill
+						className='object-cover'
+						sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+					/>
+				</div>
 			))}
 			{/* </div> */}
 
@@ -78,15 +93,15 @@ export default function ImageGallery({ images }) {
 						modules={[Navigation, Pagination]}
 						className='h-screen w-screen'
 					>
-						{images.map((src, index) => (
+						{images?.map((img, index) => (
 							<SwiperSlide key={index}>
-								<div className='flex items-center justify-center h-full'>
+								<div className='flex items-center justify-center h-full w-full'>
 									<Image
-										src={src}
+										src={img.url}
+										alt={`Slide ${img.doc_name}`}
 										width={1200}
 										height={800}
-										alt={`Slide ${index}`}
-										className='object-contain'
+										className='max-h-full max-w-full object-contain'
 									/>
 								</div>
 							</SwiperSlide>

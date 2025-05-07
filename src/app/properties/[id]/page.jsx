@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 
 import { Calendar, Clock, Info, LocateIcon } from 'lucide-react';
 
-import { property } from '@/utils/data';
+// import { property } from '@/utils/data';
 import FAQ from '@/components/common/FAQ';
 import Review from '@/components/common/Review';
 import Footer from '@/components/common/Footer';
@@ -20,8 +20,19 @@ import {
 	Button,
 	useDisclosure,
 } from '@heroui/react';
+import { openGetItem } from '@/hooks/commonService';
 const Property = ({ params }) => {
-	console.log(params);
+	const [property, setProperty] = useState({});
+	const [agent, setAgent] = useState({
+		id: 1,
+		name: 'John Doe',
+		email: '',
+		phone: '123-456-7890',
+		profile_picture: '/images/agent.png',
+		bio: "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+	});
+
+	// console.log();
 
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
 	// const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -34,8 +45,15 @@ const Property = ({ params }) => {
 	}, []);
 
 	const fetchData = async () => {
-		const data = openGetItem('/get-property');
+		const id = params.id;
+
+		const { data } = await openGetItem(
+			'get-property',
+			'b418c4d8-9021-706e-712b-0ce9a9d6730b_3bd23fb4-1957-4196-a4f8-4d2ff902afdd'
+		);
+		setProperty(data.body.data);
 	};
+	console.log(property);
 
 	const onSubmit = () => {
 		// Here you can send the review and rating to your backend or API
@@ -76,7 +94,7 @@ const Property = ({ params }) => {
 					<div className='flex gap-x-3 mb-[0.62rem]'>
 						<div className=''>
 							<h1 className='dark:text-white text-3xl mb-2 font-[500] leading-10 text-primary'>
-								{property?.name} at {property?.city}
+								{property?.house_type} at {property?.city}
 							</h1>
 							<p className='text-[1rem] font-[400] leading-6'>
 								{property?.address}
@@ -98,10 +116,12 @@ const Property = ({ params }) => {
 							/>
 						</div> */}
 						<div className=' grid grid-cols-1 md:grid-cols-2 gap-4 relative w-full'>
-							<ImageGallery images={images1} />
+							<ImageGallery
+								images={property?.images.slice(0, 2)}
+							/>
 						</div>
 						<div className='mt-[1.31rem] grid grid-cols-2 md:grid-cols-4 gap-4 relative w-full'>
-							<ImageGallery images={images} />
+							<ImageGallery images={property?.images} />
 						</div>
 						{/* <div className=' col-span-1 grid grid-cols-2 gap-y-[0.94rem] w-full gap-x-2'>
 							<div className=' col-span-2 w-full'>
@@ -131,7 +151,7 @@ const Property = ({ params }) => {
 						<h3 className='text-[1.75rem] font[500] leading-10'>
 							General Information
 						</h3>
-						<ul className='flex gap-x-[1.62rem] my-[0.75rem'>
+						{/* <ul className='flex gap-x-[1.62rem] my-[0.75rem'>
 							{property?.house_features.map((item, index) => (
 								<li
 									key={index}
@@ -140,7 +160,20 @@ const Property = ({ params }) => {
 									{item}
 								</li>
 							))}
+						</ul> */}
+						<ul className='flex gap-x-[1.62rem] my-[0.75rem]'>
+							{Object.entries(property?.house_features || {})
+								.filter(([_, value]) => value)
+								.map(([key], index) => (
+									<li
+										key={index}
+										className='text-[1.25rem] font-[500] leading-[1.75rem] text-[#202020]'
+									>
+										{key}
+									</li>
+								))}
 						</ul>
+
 						<p className='text-[1rem] font[400] leading-6 text-[#202020]'>
 							{property?.general_information}
 						</p>
@@ -151,14 +184,24 @@ const Property = ({ params }) => {
 								Extra benefits the house offers
 							</h4>
 							<ul className='list-none grid grid-cols-3 gap-x-[1.62rem] mt-[0.75rem]'>
-								{property?.extra_benefits.map((item, index) => (
+								{/* {property?.extra_benefits.map((item, index) => (
 									<li
 										key={index}
 										className='text-[1rem] font[400] leading-6 text-[#202020]'
 									>
 										{item}
 									</li>
-								))}
+								))} */}
+								{Object.entries(property?.house_features || {})
+									.filter(([_, value]) => value)
+									.map(([key], index) => (
+										<li
+											key={index}
+											className='text-[1rem] font-[400] leading-[1.75rem] text-[#202020]'
+										>
+											{key}
+										</li>
+									))}
 							</ul>
 							<button
 								className='px-3 py-5 border border-[#E9E9EB] rounded-lg w-52 text-base font-semibold leading-4 mt-[1.79rem] text-[#202020] bg-white hover:bg-[#F7F7F8] hover:text-primary'
@@ -271,8 +314,8 @@ const Property = ({ params }) => {
 						<div className='mt-9 flex items-center gap-x-4'>
 							<Image
 								src={
-									property?.agent.profile_picture
-										? property?.agent.profile_picture
+									agent?.profile_picture
+										? agent?.profile_picture
 										: '/images/agent.png'
 								}
 							></Image>
@@ -281,7 +324,7 @@ const Property = ({ params }) => {
 							</p>
 						</div>
 						<p className='text-[1rem] font[400] leading-6 text-[#202020] mt-4'>
-							{property?.agent.bio}
+							{agent?.bio}
 						</p>
 					</section>
 					<FAQ />

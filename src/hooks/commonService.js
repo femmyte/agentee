@@ -99,5 +99,5 @@ export function openList(apiPath) {
 }
 
 export function openGetItem(apiPath, id) {
-	return http.get(`/${apiPath}/${id}`, 'open');
+	return http.get(`/${apiPath}/${id}`, {}, 'core');
 }
