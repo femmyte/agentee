@@ -1,7 +1,7 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import React from 'react';
-import { reviews } from '@/utils/data';
+// import { reviews } from '@/utils/data';
 // import { Button, Image, Modal, ModalContent } from '@nextui-org/react';
 import { Star, X } from 'lucide-react';
 import { FaStar, FaRegStar, FaStarHalfAlt } from 'react-icons/fa';
@@ -15,27 +15,48 @@ import {
 	useDisclosure,
 	Image,
 } from '@heroui/react';
+import { proxyPost } from '@/services/proxyClient';
+import toast from 'react-hot-toast';
+import { openList } from '@/hooks/commonService';
+import {
+	toDate_MMM_D_YYYY_hhmmss,
+	toDate_DDMMYYYY,
+} from '@/services/formatDate';
 const ReviewCard = ({ review }) => {
 	return (
 		<div className='bg-white shadow-md rounded p-4 border border-[#F8F9FB] flex flex-col gap-4'>
 			<div className='flex items-center justify-between'>
 				<div className='flex items-center gap-3'>
-					<Image
-						alt={review?.user.name}
-						src={review.user.profile_picture}
-					/>
+					{review?.profile_picture ? (
+						<Image
+							alt={review?.reviewer_name}
+							src={review?.profile_picture}
+							width={40}
+							height={40}
+							className='w-10 h-10 rounded-full object-cover'
+						/>
+					) : (
+						<div className='w-10 h-10 rounded-full bg-black text-white font-extrabold flex items-center justify-center text-sm'>
+							{review?.reviewer_name
+								?.split(' ')
+								.slice(0, 2) // Only use the first two words
+								.map((word) => word[0])
+								.join('')
+								.toUpperCase()}
+						</div>
+					)}
 					<div className=''>
 						<h4 className='text-lg font-medium text-lightDark'>
-							{review.user.name}
+							{review?.reviewer_name}
 						</h4>
 						<p className='text-base text-lightDark font-normal'>
-							{review.date}
+							{toDate_DDMMYYYY(review?.created_at)}
 						</p>
 					</div>
 				</div>
 				<div className='flex items-center gap-x-2'>
 					{Array.from(
-						{ length: Math.floor(review.rating) },
+						{ length: Math.floor(review?.rating) },
 						(_, i) => (
 							<FaStar key={i} className='text-yellow-500' />
 						)
@@ -45,16 +66,20 @@ const ReviewCard = ({ review }) => {
 					)}
 				</div>
 			</div>
-			<p className='text-gray-600'>{review.comment}</p>
-			<p className='text-sm text-gray-500'>{review.date}</p>
+			<p className='text-gray-600'>{review.review}</p>
+			<p className='text-sm text-gray-500'>
+				{toDate_MMM_D_YYYY_hhmmss(review?.created_at)}
+			</p>
 		</div>
 	);
 };
-const Review = () => {
+const Review = ({ property_id, property_owner_id }) => {
 	// const [isOpen, setIsOpen] = useState(false);
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
 	// const { isOpen, onOpen, onOpenChange } = useDisclosure();
 	const [modalPlacement, setModalPlacement] = useState('auto');
+	const [isLoading, setIsLoading] = useState(false);
+	const [reviews, setReviews] = useState([]);
 
 	const [rating, setRating] = useState(0); // Selected rating
 	const [hover, setHover] = useState(0); // Hovered rating
@@ -72,13 +97,62 @@ const Review = () => {
 		setHover(0);
 	};
 
-	const onSubmit = () => {
-		console.log('Review:', review);
-		console.log('Rating:', rating);
+	useEffect(() => {
+		fetchData();
+	}, []);
 
-		// Here you can send the review and rating to your backend or API
-		onOpenChange(false); // Close modal
+	const fetchData = async () => {
+		const { data } = await openList(
+			'list-review'
+			// 'b418c4d8-9021-706e-712b-0ce9a9d6730b_3bd23fb4-1957-4196-a4f8-4d2ff902afdd'
+		);
+		setReviews(data.body.data);
 	};
+
+	console.log(reviews);
+
+	const onSubmit = async () => {
+		setIsLoading(true);
+
+		const data = {
+			rating,
+			review,
+			property_id,
+			property_owner_id,
+		};
+		try {
+			const response = await proxyPost('/create-review', data);
+
+			console.log(response);
+
+			if (response.data.body.success) {
+				toast.success(
+					response.data.body.message ||
+						'review submitted successfully'
+				);
+			} else {
+				toast.error('Upload failed');
+			}
+		} catch (err) {
+			console.error(err);
+			if (err.response.status === 401) {
+				toast.error('You have to login to review this property');
+				return;
+			}
+			toast.error('Submission failed!');
+		} finally {
+			setIsLoading(false);
+			onOpenChange(false);
+		}
+	};
+
+	// const onSubmit = () => {
+	// 	console.log('Review:', review);
+	// 	console.log('Rating:', rating);
+
+	// 	// Here you can send the review and rating to your backend or API
+	// 	onOpenChange(false); // Close modal
+	// };
 
 	// const openModal = () => {
 	// 	setIsOpen(true);
@@ -99,7 +173,7 @@ const Review = () => {
 				</p>
 				<div className='mt-[1.54rem]'>
 					<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-						{reviews.map((review) => (
+						{reviews?.map((review) => (
 							<ReviewCard key={review.id} review={review} />
 						))}
 					</div>
@@ -176,7 +250,11 @@ const Review = () => {
 									</div>
 								</ModalBody>
 								<ModalFooter>
-									<Button color='primary' onPress={onSubmit}>
+									<Button
+										color='primary'
+										onPress={onSubmit}
+										isLoading={isLoading}
+									>
 										Submit
 									</Button>
 								</ModalFooter>

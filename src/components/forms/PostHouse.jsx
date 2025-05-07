@@ -196,7 +196,7 @@ const PostHouse = ({ role }) => {
 									{houseTypes.map((house) => (
 										<SelectItem
 											key={house.id}
-											value={house.id}
+											value={house.label}
 										>
 											{house.label}
 										</SelectItem>

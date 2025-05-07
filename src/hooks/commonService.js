@@ -95,7 +95,7 @@ export function coreGetItem(id, accessToken) {
 }
 
 export function openList(apiPath) {
-	return http.get(`/${apiPath}`, 'open');
+	return http.get(`/${apiPath}`, {}, 'core');
 }
 
 export function openGetItem(apiPath, id) {

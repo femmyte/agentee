@@ -21,8 +21,11 @@ import {
 	useDisclosure,
 } from '@heroui/react';
 import { openGetItem } from '@/hooks/commonService';
+import GrowingTreeLoader from '@/components/loaders/FullLoader';
 const Property = ({ params }) => {
 	const [property, setProperty] = useState({});
+	const [reviews, setReviews] = useState([]);
+	const [isLoading, setIsLoading] = useState(false);
 	const [agent, setAgent] = useState({
 		id: 1,
 		name: 'John Doe',
@@ -45,6 +48,7 @@ const Property = ({ params }) => {
 	}, []);
 
 	const fetchData = async () => {
+		// setIsLoading(true)
 		const id = params.id;
 
 		const { data } = await openGetItem(
@@ -53,7 +57,6 @@ const Property = ({ params }) => {
 		);
 		setProperty(data.body.data);
 	};
-	console.log(property);
 
 	const onSubmit = () => {
 		// Here you can send the review and rating to your backend or API
@@ -86,6 +89,8 @@ const Property = ({ params }) => {
 		'/images/appartment/six.png',
 	];
 
+	if (Object.keys(property).length < 1) return <GrowingTreeLoader />;
+
 	return (
 		<>
 			<DefaultNavbar />
@@ -117,10 +122,10 @@ const Property = ({ params }) => {
 						</div> */}
 						<div className=' grid grid-cols-1 md:grid-cols-2 gap-4 relative w-full'>
 							<ImageGallery
-								images={property?.images.slice(0, 2)}
+								images={property?.images?.slice(0, 2)}
 							/>
 						</div>
-						<div className='mt-[1.31rem] grid grid-cols-2 md:grid-cols-4 gap-4 relative w-full'>
+						<div className='mt-[1.31rem] grid grid-cols-2 md:grid-cols-4 gap-4 justify-center relative w-full'>
 							<ImageGallery images={property?.images} />
 						</div>
 						{/* <div className=' col-span-1 grid grid-cols-2 gap-y-[0.94rem] w-full gap-x-2'>
@@ -329,7 +334,10 @@ const Property = ({ params }) => {
 					</section>
 					<FAQ />
 					<div className='w-ful'>
-						<Review />
+						<Review
+							property_id={property?.property_id}
+							property_owner_id={property?.created_by}
+						/>
 					</div>
 
 					<div className='flex px-10 justify-center items-center flex-col gap-4'>

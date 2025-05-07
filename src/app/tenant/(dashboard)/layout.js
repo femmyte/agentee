@@ -11,7 +11,7 @@ export default function Layout({ children }) {
 	if (!token) {
 		redirect('/signin'); // Adjust to your login path
 	}
-	if (decoded?.['custom:user-type'] !== 'landlord') {
+	if (decoded?.['custom:user-type'] !== 'tenant') {
 		redirect('/signin'); // Adjust to your login path
 	}
 
