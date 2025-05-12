@@ -38,12 +38,12 @@ export default function MessageList() {
 		<div className='p-4 max-w-3xl mx-auto bg-white rounded-md shadow-sm'>
 			<h2 className='text-lg font-semibold mb-2 px-2'>Messages</h2>
 			<div className='divide-y divide-gray-100'>
-				{messages.map((msg, index) => (
+				{messages?.map((msg, index) => (
 					<div
 						key={msg.id}
-						onClick={() => handleClick(msg.sender)}
+						onClick={() => handleClick(msg.id)}
 						className={cn(
-							'flex items-center justify-between px-4 py-3 hover:bg-blue-50 cursor-pointer border border-blue-400 rounded-md bg-blue-50'
+							'flex items-center justify-between px-4 py-3 hover:bg-blue-50 cursor-pointer border border-blue-400 rounded-md bg-blue-50 mb-3'
 						)}
 					>
 						<div className='flex items-center space-x-3'>

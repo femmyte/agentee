@@ -1,10 +1,12 @@
 import MessageDetail from '@/components/pages/Messages/Message';
 import React from 'react';
 
-const Message = () => {
+const Message = ({ params }) => {
+	const { id } = params;
+	// const { id } = useParams();
 	return (
 		<div>
-			<MessageDetail />
+			<MessageDetail conversationId={id} />
 		</div>
 	);
 };

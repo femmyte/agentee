@@ -6,7 +6,7 @@ const Message = ({ params }) => {
 	// const { id } = useParams();
 	return (
 		<div>
-			<MessageDetail senderId={id} />
+			<MessageDetail conversationId={id} />
 		</div>
 	);
 };

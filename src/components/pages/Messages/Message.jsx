@@ -7,18 +7,20 @@ import { proxyGet, proxyPost } from '@/services/proxyClient';
 import { formatTimestamp } from '@/services/formatDate';
 import { toast } from 'react-toastify';
 
-export default function MessageDetail({ senderId }) {
+export default function MessageDetail({ conversationId }) {
 	const [message, setMessage] = useState([]);
 	const [newMessage, setNewMessage] = useState('');
+	const [userId, setUserId] = useState('');
 
 	useEffect(() => {
 		fetchData();
 	}, []);
 
 	const fetchData = async () => {
-		const { data } = await proxyGet('/get-message/' + senderId);
+		const { data } = await proxyGet('/get-message/' + conversationId);
 		if (data.body.success) {
-			setMessage(data.body.data);
+			setMessage(data.body.data.messages);
+			setUserId(data.body.data.user_id);
 		} else {
 			toast.error('Unable to fetch message');
 		}
@@ -26,11 +28,15 @@ export default function MessageDetail({ senderId }) {
 
 	const handleSend = async () => {
 		if (!newMessage.trim()) return;
-
+		const receiver_id =
+			userId == message[0]?.sender
+				? message[0]?.receiver
+				: message[0]?.sender;
 		// Optional: send to API
 		const response = await proxyPost('/create-message', {
 			message: newMessage,
-			receiver: senderId,
+			receiver: receiver_id,
+			conversation_id: conversationId,
 		});
 
 		if (response.data.body.success) {
@@ -39,7 +45,9 @@ export default function MessageDetail({ senderId }) {
 				{
 					id: Date.now(),
 					message: newMessage,
-					receiver: senderId,
+					receiver: receiver_id,
+					sender: userId,
+					conversation_id: conversationId,
 					created_at: Math.floor(Date.now() / 1000),
 				},
 			]);
@@ -55,7 +63,9 @@ export default function MessageDetail({ senderId }) {
 			<div className='p-4 border-b border-white bg-white rounded-t-sm flex items-center space-x-3'>
 				<Avatar name='Jane Doe' />
 				<div>
-					<p className='font-semibold'>{message[0]?.receiver_name}</p>
+					<p className='font-semibold'>
+						{message && message[0]?.receiver_name}
+					</p>
 					<p className='text-sm text-gray-500'>Online</p>
 				</div>
 			</div>
@@ -66,14 +76,14 @@ export default function MessageDetail({ senderId }) {
 					<div
 						key={msg.id}
 						className={`flex ${
-							msg.receiver === senderId
+							msg.sender === userId
 								? 'justify-end'
 								: 'justify-start'
 						}`}
 					>
 						<div
 							className={`max-w-xs md:max-w-md p-3 rounded-xl shadow-sm text-sm ${
-								msg.receiver === senderId
+								msg.sender === userId
 									? 'bg-blue-500 text-white rounded-br-none'
 									: 'bg-white text-gray-800 rounded-bl-none border'
 							}`}
