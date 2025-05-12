@@ -57,7 +57,7 @@ const Sidebar = () => {
 	return (
 		<>
 			{activeMenu && (
-				<div className='h-screen overflow-y-auto md:overflow-x-hidden  md:hover:overflow-y-auto pb-[10px] pl-[1rem] bg-primaryGray flex flex-col justify- z-50'>
+				<div className='h-screen overflow-y-auto md:overflow-x-hidden  md:hover:overflow-y-auto pb-[10px] pl-[1rem] bg-primaryGray flex flex-col justify- z-50 shadow-md'>
 					<>
 						<div className='flex justify-between items-center'>
 							{/* <Link

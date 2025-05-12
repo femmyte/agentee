@@ -136,14 +136,25 @@ const Navbar = () => {
 				</div>
 			</div>
 			<div className='flex gap-4 items-center'>
-				<Button
-					as={Link}
-					color='warning'
-					href={`/${role}/add-property`}
-					className='bg-primary text-white'
-				>
-					Post a House
-				</Button>
+				{role !== 'tenant' ? (
+					<Button
+						as={Link}
+						color='warning'
+						href={`/${role}/add-property`}
+						className='bg-primary text-white'
+					>
+						Post a Property
+					</Button>
+				) : (
+					<Button
+						as={Link}
+						href={`/${role}/add-property`}
+						className='bg-primary text-white'
+					>
+						House Listings
+					</Button>
+				)}
+
 				<FaRegBell size={24} />
 				<Dropdown placement='bottom-end'>
 					<DropdownTrigger>

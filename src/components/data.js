@@ -350,3 +350,48 @@ export const users = [
 		email: 'mia.robinson@example.com',
 	},
 ];
+
+export const messages = [
+	{
+		id: 1,
+		sender: 'John Doe',
+		text: 'Let meet at Lekki',
+		time: '7:21am',
+		fromUser: true,
+	},
+	{
+		id: 2,
+		sender: 'Jane Doe',
+		text: 'Sure, what time?',
+		time: '7:22am',
+		fromUser: false,
+	},
+	{
+		id: 3,
+		sender: 'John Doe',
+		text: 'By 3pm',
+		time: '7:23am',
+		fromUser: true,
+	},
+	{
+		id: 4,
+		sender: 'Jane Doe',
+		text: 'Okay, see you then!',
+		time: '7:24am',
+		fromUser: false,
+	},
+	{
+		id: 5,
+		sender: 'Jane Doe',
+		text: 'How much is the house? I hope it is not too expensive because I am on a budget, and I am not ready to spend more than 1 million naira.',
+		time: '7:24am',
+		fromUser: false,
+	},
+	{
+		id: 6,
+		sender: 'Jane Doe',
+		text: 'Oh, I am so sorry. I just saw your message. I was busy with my work. I am so sorry for the late response. I hope you are doing well. The house is 1 million naira. I hope that is okay for you.',
+		time: '7:24am',
+		fromUser: true,
+	},
+];

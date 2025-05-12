@@ -61,7 +61,10 @@ const PostHouse = ({ role }) => {
 	];
 
 	const onSubmit = async (data) => {
-		setIsLoading(true);
+		// setIsLoading(true);
+
+		console.log(data);
+		return;
 
 		try {
 			if (uploadedFiles.length === 0) {

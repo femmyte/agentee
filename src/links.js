@@ -10,12 +10,12 @@ export const AgentLinks = [
 		title: 'Analysis',
 		links: [
 			{
-				address: 'dashboard',
+				address: '',
 				name: 'Dashboard',
 				icon: <AiFillDashboard size={20} />,
 			},
 			{
-				address: 'message',
+				address: 'messages',
 				name: 'Message',
 				icon: <PiChartDonut size={20} />,
 			},
@@ -32,29 +32,19 @@ export const LandlordLinks = [
 		title: 'Analysis',
 		links: [
 			{
-				address: 'dashboard',
+				address: '',
 				name: 'Dashboard',
 				icon: <AiFillDashboard size={20} />,
 			},
 			{
-				address: 'divisions',
-				name: 'Division distribution',
-				icon: <MdSpaceDashboard size={20} />,
+				address: 'messages',
+				name: 'Message',
+				icon: <PiChartDonut size={20} />,
 			},
 			{
-				address: 'statistics',
-				name: 'crime statistics',
-				icon: <BsBarChartFill size={20} />,
-			},
-			{
-				address: 'command',
-				name: 'Location Distribution',
+				address: 'review',
+				name: 'Review',
 				icon: <BiPieChartAlt size={20} />,
-			},
-			{
-				address: 'petitions',
-				name: 'Petitions',
-				icon: <HiOutlineDocumentText size={20} />,
 			},
 		],
 	},
@@ -65,34 +55,19 @@ export const TenantLink = [
 		title: 'Analysis',
 		links: [
 			{
-				address: 'dashboard',
+				address: '',
 				name: 'Dashboard',
 				icon: <AiFillDashboard size={20} />,
 			},
 			{
-				address: 'crime-map',
-				name: 'Crime Heat Map',
+				address: 'messages',
+				name: 'Messages',
 				icon: <PiChartDonut size={20} />,
 			},
 			{
-				address: 'areacommands',
-				name: 'Area Commands',
-				icon: <MdSpaceDashboard size={20} />,
-			},
-			{
-				address: 'statistics',
-				name: 'Crime Statistics',
-				icon: <BsBarChartFill size={20} />,
-			},
-			{
-				address: 'lga-distributions',
-				name: 'LGA Distribution',
+				address: 'review',
+				name: 'Review',
 				icon: <BiPieChartAlt size={20} />,
-			},
-			{
-				address: 'petitions',
-				name: 'Petitions',
-				icon: <HiOutlineDocumentText size={20} />,
 			},
 		],
 	},
@@ -103,7 +78,7 @@ export const adminLink = [
 		title: '',
 		links: [
 			{
-				address: 'dashboard',
+				address: '',
 				name: 'Dashboard',
 				icon: <AiFillDashboard size={20} />,
 			},

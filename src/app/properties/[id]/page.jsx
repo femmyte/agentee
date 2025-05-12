@@ -20,8 +20,10 @@ import {
 	Button,
 	useDisclosure,
 } from '@heroui/react';
-import { openGetItem } from '@/hooks/commonService';
+import { openGetItem, openList } from '@/hooks/commonService';
 import GrowingTreeLoader from '@/components/loaders/FullLoader';
+import { proxyPost } from '@/services/proxyClient';
+import toast from 'react-hot-toast';
 const Property = ({ params }) => {
 	const [property, setProperty] = useState({});
 	const [reviews, setReviews] = useState([]);
@@ -58,9 +60,64 @@ const Property = ({ params }) => {
 		setProperty(data.body.data);
 	};
 
-	const onSubmit = () => {
-		// Here you can send the review and rating to your backend or API
-		onOpenChange(false); // Close modal
+	useEffect(() => {
+		console.log('propert from useEffect', property);
+
+		if (property) {
+			fetchReview();
+		}
+	}, [property]);
+
+	const fetchReview = async () => {
+		console.log('calling review');
+
+		const { data } = await openList(
+			'list-review'
+			// 'b418c4d8-9021-706e-712b-0ce9a9d6730b_3bd23fb4-1957-4196-a4f8-4d2ff902afdd'
+		);
+		setReviews(data.body.data);
+	};
+
+	// const onSubmit = () => {
+	// 	// Here you can send the review and rating to your backend or API
+	// 	onOpenChange(false); // Close modal
+
+	// };
+
+	const onSubmit = async () => {
+		setIsLoading(true);
+
+		const data = {
+			message,
+			receiver: property?.created_by,
+			property_id: property.property_id,
+		};
+		console.log('data', data);
+		try {
+			const response = await proxyPost('/create-message', data);
+
+			console.log(response);
+
+			if (response.data.body.success) {
+				toast.success(
+					response.data.body.message || 'message sent successfully'
+				);
+			} else {
+				toast.error('message failed');
+			}
+		} catch (err) {
+			console.error(err);
+			if (err.response.status === 401 || err.response.data.error) {
+				toast.error(
+					'You have to login to  send message to this agent.'
+				);
+				return;
+			}
+			toast.error('Submission failed!');
+		} finally {
+			setIsLoading(false);
+			onOpenChange(false);
+		}
 	};
 
 	const beenefits = [
@@ -335,6 +392,7 @@ const Property = ({ params }) => {
 					<FAQ />
 					<div className='w-ful'>
 						<Review
+							reviews={reviews}
 							property_id={property?.property_id}
 							property_owner_id={property?.created_by}
 						/>
@@ -366,6 +424,7 @@ const Property = ({ params }) => {
 											<Button
 												color='primary'
 												onPress={onSubmit}
+												isLoading={isLoading}
 											>
 												Submit
 											</Button>

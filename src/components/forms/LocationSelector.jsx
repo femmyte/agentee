@@ -69,17 +69,19 @@ const CountryStateCitySelect = ({ control, errors }) => {
 							isSearchable
 							selectedKeys={field.value ? [field.value] : []}
 							onSelectionChange={(keys) => {
-								const selectedCode = Array.from(keys)[0];
-								const selectedObj = countries.find(
-									(c) => c.isoCode === selectedCode
+								const selectedName = Array.from(keys)[0];
+								field.onChange(selectedName); // ✅ store country name
+								const matched = countries.find(
+									(c) => c.name === selectedName
 								);
-								const selectedName = selectedObj?.name || '';
-								field.onChange(selectedName); // submit country name
-								setSelectedCountry(selectedCode); // for loading states
+								if (matched) {
+									setSelectedCountry(matched.isoCode); // for loading states
+									setSelectedCountryCode(matched.isoCode); // optional use
+								}
 							}}
 						>
 							{countries.map((c) => (
-								<SelectItem key={c.isoCode} value={c.isoCode}>
+								<SelectItem key={c.name} value={c.name}>
 									<div className='flex items-center gap-2'>
 										<img
 											src={`https://flagsapi.com/${c.isoCode}/flat/32.png`}
@@ -106,36 +108,45 @@ const CountryStateCitySelect = ({ control, errors }) => {
 				rules={{ required: true }}
 				render={({ field }) => (
 					<>
-						<Autocomplete
+						<Select
 							label='Select Country'
 							className='w-full'
-							selectedKey={field.value}
-							inputValue={inputValue}
-							onInputChange={setInputValue}
-							onSelectionChange={(key) => {
-								field.onChange(key);
-								setSelectedCountry(key);
-								setInputValue(''); // optional: reset search text
+							isSearchable
+							selectedKeys={field.value ? [field.value] : []}
+							onSelectionChange={(keys) => {
+								const selectedCode = Array.from(keys)[0];
+								field.onChange(selectedCode); // store isoCode
+								setSelectedCountry(selectedCode); // load states
 							}}
-							placeholder='Search country...'
+							onInputChange={(value) => {
+								setInputValue(value);
+								const matched = countries.find(
+									(c) =>
+										c.name
+											.toLowerCase()
+											.includes(value.toLowerCase()) ||
+										c.isoCode
+											.toLowerCase()
+											.includes(value.toLowerCase())
+								);
+								if (matched) {
+									setSelectedCountry(matched.isoCode);
+								}
+							}}
 						>
-							{filteredCountries.map((country) => (
-								<AutocompleteItem
-									key={country.isoCode}
-									value={country.isoCode}
-								>
+							{countries.map((c) => (
+								<SelectItem key={c.isoCode} value={c.isoCode}>
 									<div className='flex items-center gap-2'>
 										<img
-											src={`https://flagsapi.com/${country.isoCode}/flat/32.png`}
-											alt={country.name}
+											src={`https://flagsapi.com/${c.isoCode}/flat/32.png`}
+											alt={c.name}
 											className='w-5 h-5 rounded-sm'
 										/>
-										{country.name}
+										{c.name}
 									</div>
-								</AutocompleteItem>
+								</SelectItem>
 							))}
-						</Autocomplete>
-
+						</Select>
 						{errors.country && (
 							<p className='text-red-500 text-sm mt-1'>
 								Country is required
@@ -144,43 +155,7 @@ const CountryStateCitySelect = ({ control, errors }) => {
 					</>
 				)}
 			/> */}
-			{/* State */}
-			{/* <Controller
-				name='state'
-				control={control}
-				rules={{ required: true }}
-				render={({ field }) => (
-					<>
-						<Select
-							label='Select State'
-							className='w-full'
-							isSearchable
-							isDisabled={!selectedCountry}
-							selectedKeys={field.value ? [field.value] : []}
-							onSelectionChange={(keys) => {
-								const selectedCode = Array.from(keys)[0];
-								const selectedObj = states.find(
-									(s) => s.isoCode === selectedCode
-								);
-								const selectedName = selectedObj?.name || '';
-								field.onChange(selectedName); // submit state name
-								setSelectedState(selectedCode); // for loading cities
-							}}
-						>
-							{states.map((s) => (
-								<SelectItem key={s.isoCode} value={s.isoCode}>
-									{s.name}
-								</SelectItem>
-							))}
-						</Select>
-						{errors.state && (
-							<p className='text-red-500 text-sm mt-1'>
-								State is required
-							</p>
-						)}
-					</>
-				)}
-			/> */}
+
 			<Controller
 				name='state'
 				control={control}
@@ -221,37 +196,6 @@ const CountryStateCitySelect = ({ control, errors }) => {
 					</>
 				)}
 			/>
-			{/* City */}
-			{/* <Controller
-				name='city'
-				control={control}
-				rules={{ required: true }}
-				render={({ field }) => (
-					<>
-						<Select
-							label='Select City'
-							className='w-full'
-							isSearchable
-							isDisabled={!selectedState}
-							selectedKeys={field.value ? [field.value] : []}
-							onSelectionChange={(keys) =>
-								field.onChange(Array.from(keys)[0])
-							}
-						>
-							{cities.map((city, idx) => (
-								<SelectItem key={idx} value={city.name}>
-									{city.name}
-								</SelectItem>
-							))}
-						</Select>
-						{errors.city && (
-							<p className='text-red-500 text-sm mt-1'>
-								City is required
-							</p>
-						)}
-					</>
-				)}
-			/> */}
 		</div>
 	);
 };

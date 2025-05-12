@@ -52,22 +52,6 @@ function DashboardLayout({ children }) {
 		}
 	};
 
-	// const handleLogout = async () => {
-	// 	// setSignOut(true);
-	// 	onOpen;
-	// 	onOpenChange(false);
-	// 	Cookies.remove('accessToken');
-	// 	Cookies.remove('refreshToken');
-	// 	Cookies.remove('authToken');
-	// 	Cookies.remove('user');
-	// 	Cookies.remove('role');
-	// 	router.push('/');
-	// };
-	// const { activeMenu, darkToggle, login } = false;
-
-	// const location = useLocation();
-	// console.log('hash', location.hash);
-	// console.log(login)
 	return (
 		<>
 			<div className={`${darkToggle && 'dark'} overflow-x-hidden`}>
@@ -88,7 +72,9 @@ function DashboardLayout({ children }) {
 					<div
 						className={`
 						  ${
-								activeMenu ? 'md:ml-[17.5rem] w-full' : 'flex-2'
+								activeMenu
+									? 'md:ml-[16rem] mr-4 w-full'
+									: 'flex-2'
 							} dark:bg-main-bg bg-white min-h-screen w-full`}
 					>
 						<div
@@ -98,7 +84,7 @@ function DashboardLayout({ children }) {
 						</div>
 						<div className=' min-h-screen'>
 							<div className='dark:text-gray-200 dark:bg-main-dark-bg dark:hover:text-white pt-[50px] md:pt-0 '>
-								<div className=' pb-[30px] dark:text-gray-200 dark:bg-main-dark-bg dark:hover:text-white md:pl-[3rem] z-20 '>
+								<div className=' pb-[30px] dark:text-gray-200 dark:bg-main-dark-bg dark:hover:text-white md:pl-[2rem] z-20 '>
 									{children}
 									<div className='flex px-10 justify-center items-center flex-col gap-4'>
 										<Modal

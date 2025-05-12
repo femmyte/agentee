@@ -57,10 +57,10 @@ export async function POST(request) {
 		}
 
 		// Parse and return the response data
-		const data = await response.json();
-		console.log('Response Data:', data);
+		const result = await response.json();
+		console.log('Response Data:', result);
 
-		const { access_token, refresh_token, id_token } = data.body.data;
+		const { access_token, refresh_token, id_token } = result.body.data;
 
 		// Check different possible paths where tokens might be located
 		// if (data.body?.data?.access_token) {
@@ -75,7 +75,12 @@ export async function POST(request) {
 
 		// Set secure cookies
 		const cookieStore = cookies();
-		cookieStore.set('accessToken', access_token, {
+		const data = NextResponse.json({
+			success: true,
+			decoded: id_token,
+		});
+
+		data.cookies.set('accessToken', access_token, {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === 'production',
 			sameSite: 'Strict',
@@ -83,7 +88,7 @@ export async function POST(request) {
 			maxAge: 60 * 60 * 24, // 1 day
 		});
 
-		cookieStore.set('refreshToken', refresh_token, {
+		data.cookies.set('refreshToken', refresh_token, {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === 'production',
 			sameSite: 'Strict',
@@ -91,16 +96,15 @@ export async function POST(request) {
 			maxAge: 60 * 60 * 24 * 7, // 7 days
 		});
 
-		cookieStore.set('authToken', id_token, {
+		data.cookies.set('authToken', id_token, {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === 'production',
 			sameSite: 'Strict',
 			path: '/',
-			maxAge: 60 * 60 * 24, // 1 day
+			maxAge: 60 * 60 * 24,
 		});
 
-		// return NextResponse.json(data, { status: 200 });
-		return NextResponse.json({ success: true, decoded: id_token });
+		return data;
 	} catch (error) {
 		console.error('Error authenticating user:', error);
 		return NextResponse.json(

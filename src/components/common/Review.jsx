@@ -73,13 +73,13 @@ const ReviewCard = ({ review }) => {
 		</div>
 	);
 };
-const Review = ({ property_id, property_owner_id }) => {
+const Review = ({ reviews, property_id, property_owner_id }) => {
 	// const [isOpen, setIsOpen] = useState(false);
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
 	// const { isOpen, onOpen, onOpenChange } = useDisclosure();
 	const [modalPlacement, setModalPlacement] = useState('auto');
 	const [isLoading, setIsLoading] = useState(false);
-	const [reviews, setReviews] = useState([]);
+	// const [reviews, setReviews] = useState([]);
 
 	const [rating, setRating] = useState(0); // Selected rating
 	const [hover, setHover] = useState(0); // Hovered rating
@@ -97,17 +97,17 @@ const Review = ({ property_id, property_owner_id }) => {
 		setHover(0);
 	};
 
-	useEffect(() => {
-		fetchData();
-	}, []);
+	// useEffect(() => {
+	// 	fetchData();
+	// }, []);
 
-	const fetchData = async () => {
-		const { data } = await openList(
-			'list-review'
-			// 'b418c4d8-9021-706e-712b-0ce9a9d6730b_3bd23fb4-1957-4196-a4f8-4d2ff902afdd'
-		);
-		setReviews(data.body.data);
-	};
+	// const fetchData = async () => {
+	// 	const { data } = await openList(
+	// 		'list-review'
+	// 		// 'b418c4d8-9021-706e-712b-0ce9a9d6730b_3bd23fb4-1957-4196-a4f8-4d2ff902afdd'
+	// 	);
+	// 	setReviews(data.body.data);
+	// };
 
 	console.log(reviews);
 
