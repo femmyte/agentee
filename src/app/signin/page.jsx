@@ -8,13 +8,16 @@ const SigninPage = () => {
 	const id_token = cookies().get('authToken')?.value;
 	if (id_token) {
 		const decoded = jwtDecode(id_token);
-
-		if (decoded?.['custom:user-type'] === 'landlord') {
-			redirect('/landlord'); // Adjust to your login path
-		} else if (decoded?.['custom:user-type'] === 'agent') {
-			redirect('/agent'); // Adjust to your login path
+		if (decoded?.['custom:completed_setup'] === 'false') {
+			router.push('/welcome');
 		} else {
-			redirect('/tenant'); // Adjust to your login path
+			if (decoded?.['custom:user-type'] === 'landlord') {
+				redirect('/landlord'); // Adjust to your login path
+			} else if (decoded?.['custom:user-type'] === 'agent') {
+				redirect('/agent'); // Adjust to your login path
+			} else if (decoded?.['custom:user-type'] === 'tenant') {
+				redirect('/tenant'); // Adjust to your login path
+			}
 		}
 	}
 	return <Signin />;
