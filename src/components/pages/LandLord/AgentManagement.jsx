@@ -18,6 +18,7 @@ import { users } from '@/components/data';
 import { jwtDecode } from 'jwt-decode';
 import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
+import { proxyPost } from '@/services/proxyClient';
 
 const AgentManagement = () => {
 	const { landlordData, setLandlordData } = useStateContext();
@@ -105,14 +106,18 @@ const AgentManagement = () => {
 						storedDetails.invite_agent = true;
 
 						// save landlord data
-						const { data } = await AuthPost(
-							'/update-user-data',
-							{
-								role: 'landlord',
-								details: storedDetails,
-							},
-							accessToken
-						);
+						const data = await proxyPost('/update-user-data', {
+							role: 'landlord',
+							details: storedDetails,
+						});
+						// const { data } = await AuthPost(
+						// 	'/update-user-data',
+						// 	{
+						// 		role: 'landlord',
+						// 		details: storedDetails,
+						// 	},
+						// 	accessToken
+						// );
 
 						console.log(data);
 						if (data.body.success) {

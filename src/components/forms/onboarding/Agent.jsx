@@ -9,6 +9,7 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { AuthPost } from '@/hooks/commonService';
 import { Button } from '@nextui-org/react';
+import { proxyPost } from '@/services/proxyClient';
 
 const Agent = () => {
 	const router = useRouter();
@@ -60,22 +61,33 @@ const Agent = () => {
 		setLoading(true);
 
 		try {
-			const { data: userImage } = await AuthPost(
-				'/upload',
-				{
-					files: [
-						{
-							folder: 'agents',
-							content: {
-								doc_name: 'passport_photo.jpg',
-								document: imageBase64,
-							},
+			const { data: userImage } = await proxyPost('/upload', {
+				files: [
+					{
+						folder: 'agents',
+						content: {
+							doc_name: 'passport_photo.jpg',
+							document: imageBase64,
 						},
-					],
-				},
-				accessToken,
-				'core'
-			);
+					},
+				],
+			});
+			// const { data: userImage } = await AuthPost(
+			// 	'/upload',
+			// 	{
+			// 		files: [
+			// 			{
+			// 				folder: 'agents',
+			// 				content: {
+			// 					doc_name: 'passport_photo.jpg',
+			// 					document: imageBase64,
+			// 				},
+			// 			},
+			// 		],
+			// 	},
+			// 	accessToken,
+			// 	'core'
+			// );
 
 			if (userImage.body.success) {
 				toast.success(
@@ -93,14 +105,18 @@ const Agent = () => {
 					image: userImage.body.data.urls[0].url,
 					doc_name: userImage.body.data.urls[0].doc_name,
 				};
-				const { data } = await AuthPost(
-					'/update-user-data',
-					{
-						role: 'agent',
-						details: details,
-					},
-					accessToken
-				);
+				const data = await proxyPost('/update-user-data', {
+					role: 'agent',
+					details: details,
+				});
+				// const { data } = await AuthPost(
+				// 	'/update-user-data',
+				// 	{
+				// 		role: 'agent',
+				// 		details: details,
+				// 	},
+				// 	accessToken
+				// );
 
 				console.log(data);
 				if (data.body.success) {

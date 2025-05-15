@@ -60,17 +60,6 @@ const Sidebar = () => {
 				<div className='h-screen overflow-y-auto md:overflow-x-hidden  md:hover:overflow-y-auto pb-[10px] pl-[1rem] bg-primaryGray flex flex-col justify- z-50 shadow-md'>
 					<>
 						<div className='flex justify-between items-center'>
-							{/* <Link
-							href='/'
-							onClick={handleCloseSidebar}
-							className='items-center gap-3 ml-3 mt-4 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900'
-						>
-							<img
-								src='/images/logo.png'
-								alt='Devcent Logo'
-								className='max-w-[200px]'
-							/>
-						</Link> */}
 							<div className='relative h-[90px] w-[54px] top-0 left-0'>
 								<Image
 									src={'/images/logo.svg'}
@@ -79,12 +68,6 @@ const Sidebar = () => {
 									sizes='(max-width: 400px) 20vw, (max-width: 1200px) 10vw, 5vw'
 								/>
 							</div>
-							{/* <Image
-								src={'/images/logo.png'}
-								width={54}
-								height={90}
-								alt='logo'
-							/> */}
 							<button
 								type='button'
 								onClick={() =>
@@ -93,7 +76,10 @@ const Sidebar = () => {
 								className='text-xl rounded-full p-3 hover:bg-light-gray mt-4 block md:hidden'
 							>
 								{/* <MdOutlineCancel /> */}
-								<PiCaretLeftLight className='font-[700] text-black cursor-pointer ml-[10px] text-[2rem]' />
+								<PiCaretLeftLight
+									// size={1000}
+									className='font-[700] text-black cursor-pointer ml-[10px] text-[2rem]'
+								/>
 							</button>
 						</div>
 						<div className='mt-5 w-[225px] z-50'>

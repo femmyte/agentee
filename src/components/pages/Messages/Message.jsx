@@ -183,63 +183,66 @@ export default function MessageDetail({ conversationId, authToken }) {
 	};
 
 	return (
-		<div className='flex flex-col h-[80vh] px-4 md:px-7'>
-			{/* Header */}
-			<div className='p-4 border-b border-white bg-white rounded-t-sm flex items-center space-x-3'>
-				<Avatar name='Jane Doe' />
-				<div>
-					<p className='font-semibold'>
-						{messages && messages[0]?.receiver_name}
-					</p>
-					<p className='text-sm text-gray-500'>Online</p>
+		<div className='flex flex-col justify-between px-2 md:px-7 h-[100%]'>
+			<div className='flex-1 overflow-hidden flex flex-col'>
+				{/* Header */}
+				<div className='p-4 border-b border-white bg-white rounded-t-sm flex items-center space-x-3'>
+					<Avatar name='Jane Doe' />
+					<div>
+						<p className='font-semibold'>
+							{messages && messages[0]?.receiver_name}
+						</p>
+						<p className='text-sm text-gray-500'>Online</p>
+					</div>
 				</div>
-			</div>
 
-			{/* Chat Area */}
-			<div className='flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50'>
-				{messages?.map((msg) => (
-					<div
-						key={msg.id}
-						className={`flex ${
-							msg.sender === userId
-								? 'justify-end'
-								: 'justify-start'
-						}`}
-					>
+				{/* Chat Area */}
+				<div className='flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50'>
+					{messages?.map((msg) => (
 						<div
-							className={`max-w-xs md:max-w-md p-3 rounded-xl shadow-sm text-sm ${
+							key={msg.id}
+							className={`flex ${
 								msg.sender === userId
-									? 'bg-blue-500 text-white rounded-br-none'
-									: 'bg-white text-gray-800 rounded-bl-none border'
+									? 'justify-end'
+									: 'justify-start'
 							}`}
 						>
-							<p>{msg.message}</p>
-							<p className='text-xs text-gray-200 mt-1 text-right'>
-								{formatTimestamp(msg.created_at)}
-							</p>
+							<div
+								className={`max-w-xs md:max-w-md p-3 rounded-xl shadow-sm text-sm ${
+									msg.sender === userId
+										? 'bg-blue-500 text-white rounded-br-none'
+										: 'bg-white text-gray-800 rounded-bl-none border'
+								}`}
+							>
+								<p>{msg.message}</p>
+								<p className='text-xs text-gray-200 mt-1 text-right'>
+									{formatTimestamp(msg.created_at)}
+								</p>
+							</div>
 						</div>
-					</div>
-				))}
+					))}
+				</div>
 			</div>
-
 			{/* Message Input */}
-			<div className='p-4 bg-white border-t flex items-center space-x-2'>
-				<Input
-					fullWidth
-					variant='bordered'
-					placeholder='Type your message...'
-					value={newMessage}
-					onChange={(e) => setNewMessage(e.target.value)}
-					onKeyDown={(e) => {
-						if (e.key === 'Enter') handleSendMessage();
-					}}
-					classNames={{
-						inputWrapper: 'bg-gray-100',
-					}}
-				/>
-				<Button color='primary' onClick={handleSendMessage}>
-					Send
-				</Button>
+			<div className=' '>
+				<div className='p-4 bg-white border-t flex items-center space-x-2'>
+					<Input
+						fullWidth
+						variant='bordered'
+						placeholder='Type your message...'
+						value={newMessage}
+						onChange={(e) => setNewMessage(e.target.value)}
+						onKeyDown={(e) => {
+							if (e.key === 'Enter') handleSendMessage();
+						}}
+						classNames={{
+							inputWrapper: 'bg-gray-100',
+						}}
+					/>
+					<Button color='primary' onClick={handleSendMessage}>
+						Send
+					</Button>
+				</div>
 			</div>
 		</div>
 	);

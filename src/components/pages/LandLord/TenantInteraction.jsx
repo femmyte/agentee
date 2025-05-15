@@ -10,6 +10,7 @@ import { useStateContext } from '@/providers/contextProvider';
 import { Button } from '@nextui-org/react';
 import Cookies from 'js-cookie';
 import toast from 'react-hot-toast';
+import { proxyPost } from '@/services/proxyClient';
 
 const TenantInteraction = () => {
 	const { landlordData, setLandlordData } = useStateContext();
@@ -62,14 +63,18 @@ const TenantInteraction = () => {
 			const storedDetails = JSON.parse(sessionStorage.getItem('details'));
 			if (storedDetails) {
 				storedDetails.interact_with_tenant = option;
-				const { data } = await AuthPost(
-					'/update-user-data',
-					{
-						role: 'landlord',
-						details: storedDetails,
-					},
-					accessToken
-				);
+				const data = await proxyPost('/update-user-data', {
+					role: 'landlord',
+					details: storedDetails,
+				});
+				// const { data } = await AuthPost(
+				// 	'/update-user-data',
+				// 	{
+				// 		role: 'landlord',
+				// 		details: storedDetails,
+				// 	},
+				// 	accessToken
+				// );
 
 				console.log(data);
 				if (data.body.success) {

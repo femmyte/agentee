@@ -25,7 +25,7 @@ const MessageCard = () => {
 };
 const Dashboard = () => {
 	return (
-		<section className='pt-6 px-4 md:px-[2.2rem] bg-[#F1F9F4] min-h-screen'>
+		<section className='pt-6 px-4 md:px-[1.2rem] bg-[#F1F9F4] min-h-screen'>
 			<div className='grid grid-cols-1 md:grid-cols-5 gap-6'>
 				<TopDashboard title={'Pending Transactions'} total={10} />
 				<TopDashboard title={'Transaction'} total={10} />

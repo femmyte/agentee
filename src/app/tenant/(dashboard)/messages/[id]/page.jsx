@@ -7,7 +7,7 @@ const Message = ({ params }) => {
 	const token = cookies().get('accessToken')?.value;
 	// const { id } = useParams();
 	return (
-		<div>
+		<div className='h-[90vh] bg-[#F1F9F4]  overflow-y-scroll'>
 			<MessageDetail conversationId={id} authToken={token} />
 		</div>
 	);

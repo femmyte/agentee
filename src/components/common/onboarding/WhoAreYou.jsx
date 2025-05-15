@@ -10,6 +10,7 @@ import Cookies from 'js-cookie';
 import toast from 'react-hot-toast';
 import { Button } from '@nextui-org/react';
 import FullLoader from '@/components/loaders/FullLoader';
+import { proxyPost } from '@/services/proxyClient';
 
 const WhoAreYou = () => {
 	const [user, setUser] = useState('');
@@ -37,13 +38,16 @@ const WhoAreYou = () => {
 		setLoading(true);
 
 		try {
-			const { data } = await AuthPost(
-				'/update-user-data',
-				{
-					role: user,
-				},
-				accessToken
-			);
+			const data = await proxyPost('/update-user-data', {
+				role: user,
+			});
+			// const { data } = await AuthPost(
+			// 	'/update-user-data',
+			// 	{
+			// 		role: user,
+			// 	},
+			// 	accessToken
+			// );
 
 			console.log(data);
 			if (data.body.success) {

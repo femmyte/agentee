@@ -1,5 +1,25 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+
+import {
+	Navbar,
+	NavbarBrand,
+	NavbarContent,
+	NavbarMenuToggle,
+	NavbarMenuItem,
+	NavbarMenu,
+	NavbarItem,
+	Link,
+	Button,
+	DropdownItem,
+	DropdownTrigger,
+	Dropdown,
+	DropdownMenu,
+	Avatar,
+} from '@nextui-org/react';
+// import SwitchMode from './SwitchMode';
+// import { SearchIcon } from './SearchIcon';
+
 import {
 	AiOutlineArrowDown,
 	AiOutlineMail,
@@ -9,20 +29,20 @@ import {
 import { useStateContext } from '@/providers/contextProvider';
 import Image from 'next/image';
 import { FiLogOut } from 'react-icons/fi';
-import Link from 'next/link';
+// import Link from 'next/link';
 import { FaRegBell, FaUserTie } from 'react-icons/fa';
 // import { useSelector } from 'react-redux';
 import { PiCaretLeftLight } from 'react-icons/pi';
 import { FaBell } from 'react-icons/fa6';
-import {
-	Avatar,
-	Button,
-	Dropdown,
-	DropdownItem,
-	DropdownMenu,
-	DropdownTrigger,
-	Input,
-} from '@nextui-org/react';
+// import {
+// 	Avatar,
+// 	Button,
+// 	Dropdown,
+// 	DropdownItem,
+// 	DropdownMenu,
+// 	DropdownTrigger,
+// 	Input,
+// } from '@nextui-org/react';
 import { SearchIcon } from '../common/SearchIcon';
 import Cookies from 'js-cookie';
 
@@ -44,7 +64,7 @@ const NavButton = ({ title, customFunc, icon, color, dotColor, num }) => (
 		</div>
 	</div>
 );
-const Navbar = () => {
+const NavbarComponent = () => {
 	const {
 		activeMenu,
 		setActiveMenu,
@@ -54,6 +74,11 @@ const Navbar = () => {
 		pageSubTitle,
 		setOpenLogoutModal,
 	} = useStateContext();
+
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+	const menuItems = ['Find Agents', 'Post your house'];
+
 	// const { currentUser } = useSelector((state) => state.user);
 	// const { areaCommands } = useSelector((state) => state.shared);
 	// const areaCommandName = areaCommands?.filter(
@@ -108,18 +133,19 @@ const Navbar = () => {
 	const role = Cookies.get('role');
 
 	return (
-		<div className='flex justify-between  pt-[0.9rem] items-center py-4 px-8'>
+		<>
+			{/* <div className='flex justify-between  pt-[0.9rem] items-center py-4 px-8'> */}
 			{/* <Image src={'/images/logo.png'} width={54} height={90} alt='logo' /> */}
 			{/* {!activeMenu && ( */}
-			<div className='flex items-center gap-x-2'>
+			{/* <div className='flex items-center gap-x-2'>
 				<NavButton
 					title='Menu'
 					customFunc={() => setActiveMenu((prevState) => !prevState)}
 					color='blue'
 					icon={<PiCaretLeftLight />}
-				/>
-				{/* )} */}
-				<div className='hidden sm-block'>
+				/> */}
+			{/* )} */}
+			{/* <div className='hidden sm-block'>
 					<Input
 						classNames={{
 							base: 'hidden sm-block max-w-full sm:w-[22.8rem] h-[3rem]',
@@ -190,7 +216,7 @@ const Navbar = () => {
 						</DropdownItem>
 					</DropdownMenu>
 				</Dropdown>
-			</div>
+			</div> */}
 			{/* <li
 				className={`relative group text-white cursor-pointer ${
 					dropDown ? '' : ''
@@ -246,8 +272,186 @@ const Navbar = () => {
 			{/* </ul>
 				)}
 			</li> */}
-		</div>
+			{/* </div> */}
+
+			<Navbar
+				isBordered
+				isMenuOpen={isMenuOpen}
+				onMenuOpenChange={setIsMenuOpen}
+				shouldHideOnScroll
+				// maxWidth='full'
+				className='bg-white shadow-sm px- ml-'
+			>
+				{/* <NavbarContent className='hidden sm:flex '> */}
+				<NavbarContent as={'div'} className='' justify=''>
+					{/* <NavbarBrand>
+						<Link color='foreground' href='/'>
+							<Image
+								src={'/images/logo.svg'}
+								width={98}
+								height={17}
+							></Image>
+						</Link>
+					</NavbarBrand> */}
+					{/* <div className='flex items-center gap-x-2'> */}
+					{!activeMenu && (
+						<NavButton
+							title='Menu'
+							customFunc={() =>
+								setActiveMenu((prevState) => !prevState)
+							}
+							color='blue'
+							icon={<PiCaretLeftLight />}
+						/>
+					)}
+					{/* </div> */}
+				</NavbarContent>
+
+				<NavbarContent
+					as='div'
+					className=' justify-end gap-x-8'
+					justify
+				>
+					<NavbarItem className='hidden lg:flex'>
+						<Link color='foreground' href='/agent/add-property'>
+							Post your house
+						</Link>
+					</NavbarItem>
+					<NavbarItem className='hidden lg:flex'>
+						<Link href='#' aria-current='page'>
+							Find Agents
+						</Link>
+					</NavbarItem>
+
+					<NavbarContent justify='' className='hidden sm:flex'>
+						<NavbarItem>
+							<Button
+								as={Link}
+								color='warning'
+								href='/signin'
+								className='bg-primary text-white'
+							>
+								Sign In
+							</Button>
+						</NavbarItem>
+					</NavbarContent>
+					{/* avatar */}
+					<NavbarContent
+						as='div'
+						justify='end'
+						className='hidden lg:flex'
+					>
+						<Dropdown placement='bottom-end'>
+							<DropdownTrigger>
+								<Avatar
+									isBordered
+									as='button'
+									className='transition-transform'
+									color='secondary'
+									name='Jason Hughes'
+									size='sm'
+									src='https://i.pravatar.cc/150?u=a042581f4e29026704d'
+								/>
+							</DropdownTrigger>
+							<DropdownMenu
+								aria-label='Profile Actions'
+								variant='flat'
+							>
+								<DropdownItem
+									key='profile'
+									className='h-14 gap-2'
+								>
+									<p className='font-semibold'>
+										Signed in as
+									</p>
+									<p className='font-semibold'>
+										zoey@example.com
+									</p>
+								</DropdownItem>
+								<DropdownItem key='settings'>
+									My Settings
+								</DropdownItem>
+								<DropdownItem key='team_settings'>
+									Team Settings
+								</DropdownItem>
+								<DropdownItem key='analytics'>
+									Analytics
+								</DropdownItem>
+								<DropdownItem key='system'>System</DropdownItem>
+								<DropdownItem key='configurations'>
+									Configurations
+								</DropdownItem>
+								<DropdownItem key='help_and_feedback'>
+									Help & Feedback
+								</DropdownItem>
+								<DropdownItem key='logout' color='danger'>
+									Log Out
+								</DropdownItem>
+							</DropdownMenu>
+						</Dropdown>
+					</NavbarContent>
+					{/* mode switcher */}
+					{/* <NavbarContent justify='end'>
+					<SwitchMode />
+				</NavbarContent> */}
+				</NavbarContent>
+				{/* </NavbarContent> */}
+				{/* menu for mobile */}
+
+				{/* logo for mobile */}
+				<NavbarContent
+					className='sm:hidden pr- justify-start '
+					justify=''
+				>
+					<NavbarBrand>
+						<Link color='foreground' href='/'>
+							<Image
+								src={'/images/logo.svg'}
+								width={98}
+								height={17}
+							></Image>
+						</Link>
+					</NavbarBrand>
+					<NavbarMenu className='w-screen h-screen flex flex-col justify-center items-center'>
+						{menuItems.map((item, index) => (
+							<NavbarMenuItem key={`${item}-${index}`}>
+								<Link
+									className='w-full'
+									color={
+										index === 2
+											? 'warning'
+											: index === menuItems.length - 1
+											? 'danger'
+											: 'foreground'
+									}
+									href='#'
+									size='lg'
+								>
+									{item}
+								</Link>
+							</NavbarMenuItem>
+						))}
+						<NavbarItem>
+							<Button
+								as={Link}
+								color='warning'
+								href='/signin'
+								className='bg-primary text-white w-[80vw]'
+							>
+								Sign In
+							</Button>
+						</NavbarItem>
+					</NavbarMenu>
+				</NavbarContent>
+				{/* hamburger for mobile */}
+				<NavbarContent className='sm:hidden' justify='end'>
+					<NavbarMenuToggle
+						aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+					/>
+				</NavbarContent>
+			</Navbar>
+		</>
 	);
 };
 
-export default Navbar;
+export default NavbarComponent;

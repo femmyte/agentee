@@ -1,4 +1,4 @@
-import DashboardLayout from '@/components/Navigation/DashboardLayout';
+import DashboardLayout from '@/components/common/DashboardLayout';
 import { jwtDecode } from 'jwt-decode';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -16,10 +16,8 @@ export default function Layout({ children }) {
 	}
 
 	return (
-		<DashboardLayout>
-			<div className='pt-6 px-4 md:px-[2.2rem] bg-[#F1F9F4] min-h-screen'>
-				{children}
-			</div>
-		</DashboardLayout>
+		<div className='pt-6 px-4 md:px-[2.2rem] bg-[#F1F9F4] min-h-'>
+			<DashboardLayout>{children}</DashboardLayout>
+		</div>
 	);
 }

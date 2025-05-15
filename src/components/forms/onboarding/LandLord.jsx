@@ -82,22 +82,33 @@ const LandLord = () => {
 		setLoading(true);
 
 		try {
-			const { data: userImage } = await AuthPost(
-				'/upload',
-				{
-					files: [
-						{
-							folder: 'landlord',
-							content: {
-								doc_name: 'passport_photo.jpg',
-								document: imageBase64,
-							},
+			const { data: userImage } = await proxyPost('/upload', {
+				files: [
+					{
+						folder: 'agents',
+						content: {
+							doc_name: 'passport_photo.jpg',
+							document: imageBase64,
 						},
-					],
-				},
-				accessToken,
-				'core'
-			);
+					},
+				],
+			});
+			// const { data: userImage } = await AuthPost(
+			// 	'/upload',
+			// 	{
+			// 		files: [
+			// 			{
+			// 				folder: 'landlord',
+			// 				content: {
+			// 					doc_name: 'passport_photo.jpg',
+			// 					document: imageBase64,
+			// 				},
+			// 			},
+			// 		],
+			// 	},
+			// 	accessToken,
+			// 	'core'
+			// );
 
 			if (userImage.body.success) {
 				toast.success(

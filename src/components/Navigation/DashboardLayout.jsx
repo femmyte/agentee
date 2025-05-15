@@ -73,18 +73,18 @@ function DashboardLayout({ children }) {
 						className={`
 						  ${
 								activeMenu
-									? 'md:ml-[16rem] mr-4 w-full'
+									? 'md:ml-[17.5rem] mr- w-full'
 									: 'flex-2'
-							} dark:bg-main-bg bg-white min-h-screen w-full`}
+							} dark:bg-main-bg bg-[#F1F9F4] min-h-[95vh] w-full`}
 					>
 						<div
-							className={`${' md:static bg-main-bg dark:bg-main-dark-bg navbar w-full'}`}
+						// className={`${' md:static bg-main-bg dark:bg-main-dark-bg navbar w-full'}`}
 						>
 							<Navbar />
 						</div>
-						<div className=' min-h-screen'>
+						<div className=' min-h-[95vh]'>
 							<div className='dark:text-gray-200 dark:bg-main-dark-bg dark:hover:text-white pt-[50px] md:pt-0 '>
-								<div className=' pb-[30px] dark:text-gray-200 dark:bg-main-dark-bg dark:hover:text-white md:pl-[2rem] z-20 '>
+								<div className=' pb-[30px] dark:text-gray-200 dark:bg-main-dark-bg dark:hover:text-white md:pl-[2rem z-20 '>
 									{children}
 									<div className='flex px-10 justify-center items-center flex-col gap-4'>
 										<Modal
