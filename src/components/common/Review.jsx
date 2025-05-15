@@ -109,8 +109,6 @@ const Review = ({ reviews, property_id, property_owner_id }) => {
 	// 	setReviews(data.body.data);
 	// };
 
-	console.log(reviews);
-
 	const onSubmit = async () => {
 		setIsLoading(true);
 
